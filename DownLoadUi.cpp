@@ -160,6 +160,13 @@ void DownLoadUi::on_downLoadPushButton_clicked()
     if(!m_can->CanTransmit(devType,devIndex,canIndex,&m_canData,1))
         QMessageBox::warning(this,tr("发送下载命令"),
           tr("发送下载命令 %1.").arg(ui->chooseFilePathLineEdit->text()));
+
+
+    unsigned char test[8] = {0x3c,0x16,0xfc,0x0c,0x46,0x6a,0xcf,0x0e};
+    int crc = calculate_crc8(test,8);
+
+    qDebug() << crc;
+
 }
 
 void DownLoadUi::onTimerout()
@@ -198,8 +205,10 @@ void DownLoadUi::onTimerout()
         break;
     case CAN_MSG_REQ_NEXT:  // 请求下一帧数据
         FillCodeData();
+        qDebug() << "Next";
         break;
     case CAN_MSG_REQ_AGAIN: // 请求重新发送该帧数据
+        qDebug() << "Again";
         break;
     default:
         break;

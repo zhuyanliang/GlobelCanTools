@@ -54,7 +54,6 @@ int DataProcess::receiveData()
     {
         VCI_ERR_INFO errinfo;
         m_can->CanReadErrInfo(devType,devIndex,canIndex,&errinfo);
-        //qDebug() << errinfo.ErrCode;
     }
     return ret;
 }
@@ -73,54 +72,6 @@ void DataProcess::sendGetDataRequest()
 
     switch(m_requestNum++)
     {
-    case 0:
-        sendFrame[0].ID = BMS_INFO;
-        break;
-    case 1:
-        sendFrame[0].ID = CELL_INFO;
-        break;
-    case 2:
-        sendFrame[0].ID = TEMPERTURE;
-        break;
-    case 3:
-        sendFrame[0].ID = BMS_VERSION;
-        break;
-    case 4:
-        sendFrame[0].ID = PACK_INFO;
-        break;
-    case 5:
-        sendFrame[0].ID = CCURRENT_OVER;
-        break;
-    case 6:
-        sendFrame[0].ID = PCURRENT_OVET;
-        break;
-    case 7:
-        sendFrame[0].ID = CTEMP_OVER;
-        break;
-    case 8:
-        sendFrame[0].ID = PTEMP_OVER;
-        break;
-    case 9:
-        sendFrame[0].ID = CTEMP_LOW;
-        break;
-    case 10:
-        sendFrame[0].ID = PTEMP_LOW;
-        break;
-    case 11:
-        sendFrame[0].ID = CELLVOLO;
-        break;
-    case 12:
-        sendFrame[0].ID = WRITEMCU;
-        break;
-    case 13:
-        sendFrame[0].ID = READMCU;
-        break;
-    case 14:
-        sendFrame[0].ID = READDATA;
-        break;
-    default:
-        m_requestNum = 0;
-        break;
     }
     if(m_can->CanTransmit(devType,devIndex,canIndex,sendFrame,1))
         qDebug() << "sendGetDataRequest success";
@@ -157,9 +108,9 @@ short DataProcess::getCurrent()
 
 uint16_t DataProcess::getTotalVoltage()
 {
-    if (m_dataRecv.contains(0x180250F4))
+    if (m_dataRecv.contains(BRO_BATT_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180250F4);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_BATT_INFO);
         uint16_t ret = 0x00;
         ret = (uint8_t)dat.Data[1];
         ret = (ret << 8);
@@ -174,11 +125,14 @@ uint16_t DataProcess::getTotalVoltage()
 
 uchar DataProcess::getSoc()
 {
-    if (m_dataRecv.contains(0x180250F4))
+    if (m_dataRecv.contains(BRO_BATT_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180250F4);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_BATT_INFO);
 
-        return dat.Data[4];
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+
+        return data[4];
     }
     else
         return 0;
@@ -186,41 +140,54 @@ uchar DataProcess::getSoc()
 
 void DataProcess::getCellsVoltage(float cellVol[],int len)
 {
-    if(m_dataRecv.contains(0x181050F4) && m_dataRecv.contains(0x181150F4)
-            && m_dataRecv.contains(0x181250F4) && m_dataRecv.contains(0x181350F4)
-            && m_dataRecv.contains(0x181450F4))
+    if(m_dataRecv.contains(BRO_CELL_VOLT1) && m_dataRecv.contains(BRO_CELL_VOLT2)
+            && m_dataRecv.contains(BRO_CELL_VOLT3) && m_dataRecv.contains(BRO_CELL_VOLT4)
+            && m_dataRecv.contains(BRO_CELL_VOLT5))
     {
-        VCI_CAN_OBJ dat1 = m_dataRecv.value(0x181050F4);
-        VCI_CAN_OBJ dat2 = m_dataRecv.value(0x181150F4);
-        VCI_CAN_OBJ dat3 = m_dataRecv.value(0x181250F4);
-        VCI_CAN_OBJ dat4 = m_dataRecv.value(0x181350F4);
-        VCI_CAN_OBJ dat5 = m_dataRecv.value(0x181450F4);
+        VCI_CAN_OBJ dat1 = m_dataRecv.value(BRO_CELL_VOLT1);
+        VCI_CAN_OBJ dat2 = m_dataRecv.value(BRO_CELL_VOLT2);
+        VCI_CAN_OBJ dat3 = m_dataRecv.value(BRO_CELL_VOLT3);
+        VCI_CAN_OBJ dat4 = m_dataRecv.value(BRO_CELL_VOLT4);
+        VCI_CAN_OBJ dat5 = m_dataRecv.value(BRO_CELL_VOLT5);
+
+        unsigned char data1[8] = {0};
+        unsigned char data2[8] = {0};
+        unsigned char data3[8] = {0};
+        unsigned char data4[8] = {0};
+        unsigned char data5[8] = {0};
+
+        memcpy(data1,dat1.Data,dat1.DataLen);
+        memcpy(data2,dat2.Data,dat2.DataLen);
+        memcpy(data3,dat3.Data,dat3.DataLen);
+        memcpy(data4,dat4.Data,dat4.DataLen);
+        memcpy(data5,dat5.Data,dat5.DataLen);
+
         if(20 == len)
         {
-            cellVol[0] =  (float)((dat1.Data[1]<<8)+(dat1.Data[0]))*0.001;
-            cellVol[1] =  (float)((dat1.Data[3]<<8)+(dat1.Data[2]))*0.001;
-            cellVol[2] =  (float)((dat1.Data[5]<<8)+(dat1.Data[4]))*0.001;
-            cellVol[3] =  (float)((dat1.Data[7]<<8)+(dat1.Data[6]))*0.001;
+            cellVol[0] =  (float)((data1[1]<<8)+(data1[0]))*0.001;
+            cellVol[1] =  (float)((data1[3]<<8)+(data1[2]))*0.001;
+            cellVol[2] =  (float)((data1[5]<<8)+(data1[4]))*0.001;
+            cellVol[3] =  (float)((data1[7]<<8)+(data1[6]))*0.001;
 
-            cellVol[4] =  (float)((dat2.Data[1]<<8)+(dat2.Data[0]))*0.001;
-            cellVol[5] =  (float)((dat2.Data[3]<<8)+(dat2.Data[2]))*0.001;
-            cellVol[6] =  (float)((dat2.Data[5]<<8)+(dat2.Data[4]))*0.001;
-            cellVol[7] =  (float)((dat2.Data[7]<<8)+(dat2.Data[6]))*0.001;
+            cellVol[4] =  (float)((data2[1]<<8)+(data2[0]))*0.001;
+            cellVol[5] =  (float)((data2[3]<<8)+(data2[2]))*0.001;
+            cellVol[6] =  (float)((data2[5]<<8)+(data2[4]))*0.001;
+            cellVol[7] =  (float)((data2[7]<<8)+(data2[6]))*0.001;
 
-            cellVol[8] =  (float)((dat3.Data[1]<<8)+(dat3.Data[0]))*0.001;
-            cellVol[9] =  (float)((dat3.Data[3]<<8)+(dat3.Data[2]))*0.001;
-            cellVol[10] = (float)((dat3.Data[5]<<8)+(dat3.Data[4]))*0.001;
-            cellVol[11] = (float)((dat3.Data[7]<<8)+(dat3.Data[6]))*0.001;
+            cellVol[8] =  (float)((data3[1]<<8)+(data3[0]))*0.001;
+            cellVol[9] =  (float)((data3[3]<<8)+(data3[2]))*0.001;
+            cellVol[10] = (float)((data3[5]<<8)+(data3[4]))*0.001;
+            cellVol[11] = (float)((data3[7]<<8)+(data3[6]))*0.001;
 
-            cellVol[12] = (float)((dat4.Data[1]<<8)+(dat4.Data[0]))*0.001;
-            cellVol[13] = (float)((dat4.Data[3]<<8)+(dat4.Data[2]))*0.001;
-            cellVol[14] = (float)((dat4.Data[5]<<8)+(dat4.Data[4]))*0.001;
-            cellVol[15] = (float)((dat4.Data[7]<<8)+(dat4.Data[6]))*0.001;
+            cellVol[12] = (float)((data4[1]<<8)+(data4[0]))*0.001;
+            cellVol[13] = (float)((data4[3]<<8)+(data4[2]))*0.001;
+            cellVol[14] = (float)((data4[5]<<8)+(data4[4]))*0.001;
+            cellVol[15] = (float)((data4[7]<<8)+(data4[6]))*0.001;
 
-            cellVol[16] = (float)((dat5.Data[1]<<8)+(dat5.Data[0]))*0.001;
-            cellVol[17] = (float)((dat5.Data[3]<<8)+(dat5.Data[2]))*0.001;
-            cellVol[18] = (float)((dat5.Data[5]<<8)+(dat5.Data[4]))*0.001;
-            cellVol[19] = (float)((dat5.Data[7]<<8)+(dat5.Data[6]))*0.001;
+            cellVol[16] = (float)((data5[1]<<8)+(data5[0]))*0.001;
+            cellVol[17] = (float)((data5[3]<<8)+(data5[2]))*0.001;
+            cellVol[18] = (float)((data5[5]<<8)+(data5[4]))*0.001;
+            cellVol[19] = (float)((data5[7]<<8)+(data5[6]))*0.001;
         }
     }
     else
@@ -253,10 +220,12 @@ void DataProcess::getCellsVoltage(float cellVol[],int len)
 
 float DataProcess::getMaxCellVoltage()
 {
-    if (m_dataRecv.contains(0x180350F4))
+    if (m_dataRecv.contains(BRO_CELLV_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180350F4);
-        float ret = (float)((dat.Data[1] << 8) + (dat.Data[0])) * 0.001;
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_CELLV_INFO);
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+        float ret = (float)((data[1] << 8) + (data[0])) * 0.001;
 
         return ret;
     }
@@ -266,11 +235,13 @@ float DataProcess::getMaxCellVoltage()
 
 float DataProcess::getMinCellVoltage()
 {
-    if (m_dataRecv.contains(0x180350F4))
+    if (m_dataRecv.contains(BRO_CELLV_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180350F4);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_CELLV_INFO);
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
 
-        float ret = (float)((dat.Data[3] << 8) + (dat.Data[2]))*0.001;
+        float ret = (float)((data[3] << 8) + (data[2]))*0.001;
 
         return ret;
     }
@@ -280,11 +251,14 @@ float DataProcess::getMinCellVoltage()
 
 char DataProcess::getMaxCellTemp()
 {
-    if (m_dataRecv.contains(0x180450F4))
+    if (m_dataRecv.contains(BRO_CELLT_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180450F4);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_CELLT_INFO);
 
-        return dat.Data[0];
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+
+        return data[0];
     }
     else
         return 0;
@@ -292,11 +266,14 @@ char DataProcess::getMaxCellTemp()
 
 char DataProcess::getMinCellTemp()
 {
-    if (m_dataRecv.contains(0x180450F4))
+    if (m_dataRecv.contains(BRO_CELLT_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180450F4);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_CELLT_INFO);
 
-        return dat.Data[1];
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+
+        return data[1];
     }
     else
         return 0;
@@ -305,11 +282,14 @@ char DataProcess::getMinCellTemp()
 
 uchar DataProcess::getMaxCellVolNum()
 {
-    if (m_dataRecv.contains(0x180350F4))
+    if (m_dataRecv.contains(BRO_CELLV_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180350F4);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_CELLV_INFO);
 
-        return dat.Data[4];
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+
+        return data[4];
     }
     else
         return 0;
@@ -317,11 +297,12 @@ uchar DataProcess::getMaxCellVolNum()
 
 uchar DataProcess::getMinCellVolNum()
 {
-    if (m_dataRecv.contains(0x180350F4))
+    if (m_dataRecv.contains(BRO_CELLV_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180350F4);
-
-        return dat.Data[5];
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_CELLV_INFO);
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+        return data[5];
     }
     else
         return 0;
@@ -348,10 +329,14 @@ char DataProcess::getCellTemp(uchar num)
 {
     if(num<4 && num>=0)
     {
-        if(m_dataRecv.contains(0x182050F4))
+        if(m_dataRecv.contains(BRO_TEMP_01))
         {
-            static VCI_CAN_OBJ dat = m_dataRecv.value(0x182050F4);
-            return dat.Data[num];
+            static VCI_CAN_OBJ dat = m_dataRecv.value(BRO_TEMP_01);
+
+            unsigned char data[8] = {0};
+            memcpy(data,dat.Data,dat.DataLen);
+
+            return data[num];
         }
         else
         {
@@ -370,11 +355,14 @@ char DataProcess::getCellTemp(uchar num)
 
 uchar DataProcess::getMinCellTempNum()
 {
-    if (m_dataRecv.contains(0x180450F4))
+    if (m_dataRecv.contains(BRO_CELLT_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180350F4);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_CELLT_INFO);
 
-        return dat.Data[5];
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+
+        return data[5];
     }
     else
         return 0;
@@ -383,31 +371,35 @@ uchar DataProcess::getMinCellTempNum()
 
 uchar DataProcess::getMaxCellTempNum()
 {
-    if (m_dataRecv.contains(0x180450F4))
+    if (m_dataRecv.contains(BRO_CELLT_INFO))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(0x180350F4);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_CELLT_INFO);
 
-        return dat.Data[4];
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+
+        return data[3];
     }
     else
         return 0;
 
 }
 
-
 ushort DataProcess::getChgCircNum()//充放电循环次数
 {
-    return 0;
+    if (m_dataRecv.contains(REC_PACK_SOH))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_PACK_SOH);
+
+        unsigned char data[8] = {0};
+        memcpy(data,dat.Data,dat.DataLen);
+
+        return (data[1]<<8)|(data[0]);
+    }
+    else
+        return 0;
 }
 
-ushort DataProcess::getChgCurOverNum()      //充电过流故障发生次数
-{
-    return 0;
-}
 
-ushort DataProcess::getCellVoltOverNum()    //Cell过压故障次数
-{
-    return 0;
-}
 
 

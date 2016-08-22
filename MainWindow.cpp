@@ -186,7 +186,6 @@ void MainWindow::initUI()
 void MainWindow::TimeUpdate(void)
 {
     float maxV  = m_dataProcess->getMaxCellVoltage();
-
     float minV = m_dataProcess->getMinCellVoltage();
     uchar maxVP = m_dataProcess->getMaxCellVolNum();
     uchar minVP = m_dataProcess->getMinCellVolNum();
@@ -229,7 +228,7 @@ void MainWindow::TimeUpdate(void)
     m_cellMinMaxInfoUi->lineEditMinTPos->setText(QString::number(minTP));
     m_cellMinMaxInfoUi->lineEditDltT->setText(QString::number(tDlt));
 
-    float cellsValt[20];
+    float cellsValt[20] = {0};
     m_dataProcess->getCellsVoltage(cellsValt,20);
     //所有Cell的电压
     ui->lineEditCell01->setText(QString::number(cellsValt[0]));
@@ -259,7 +258,7 @@ void MainWindow::TimeUpdate(void)
     ui->lineEditTemp03->setText(QString::number(m_dataProcess->getCellTemp(2)));
     ui->lineEditTemp04->setText(QString::number(m_dataProcess->getCellTemp(3)));
 
-    m_dataProcess->getAllData().clear();
+    //m_dataProcess->getAllData().clear();
 }
 
 void MainWindow::dataReceived(VCI_CAN_OBJ &data)

@@ -6,51 +6,81 @@
 #include "ControlCAN.h"
 #include <QMutex>
 
-#define BMS_VERSION     0x1800F5FD
-#define BMS_INFO        0x1801F5FD  //电压、总电流、故障报警状态等
-#define CELL_INFO       0x1802F5FD
-#define CELL_VOLT_1     0x1803F5FD
-#define CELL_VOLT_2     0x1804F5FD
-#define CELL_VOLT_3     0x1805F5FD
-#define CELL_VOLT_4     0x1806F5FD
-#define CELL_VOLT_5     0x1807F5FD
-#define PACKSOH         0x180CF5FD
-#define PACKWARINF      0x180DF5FD
-#define TEMPERTURE      0x180EF5FD
-#define PACK_INFO       0x1820F5FD
-#define CCURRENT_OVER   0x1822F5FD
-#define PCURRENT_OVET   0x1823F5FD
-#define CTEMP_OVER      0x1824F5FD
-#define PTEMP_OVER      0x1825F5FD
-#define CTEMP_LOW       0x1826F5FD
-#define PTEMP_LOW       0x1827F5FD
-#define CELLVOLO        0x1828F5FD
-#define WRITEMCU        0x1830F5FD
-#define READMCU         0x1831F5FD
-#define READDATA        0x1840F5FD
 
-#define R_BMS_VERSION     0x1800FDF5
-#define R_BMS_INFO        0x1801FDF5  //电压、总电流、故障报警状态等
-#define R_CELL_INFO       0x1802FDF5
-#define R_CELL_VOLT_1     0x1803FDF5
-#define R_CELL_VOLT_2     0x1804FDF5
-#define R_CELL_VOLT_3     0x1805FDF5
-#define R_CELL_VOLT_4     0x1806FDF5
-#define R_CELL_VOLT_5     0x1807FDF5
-#define R_ACKSOH          0x180CFDF5
-#define R_PACKWARINF      0x180DFDF5
-#define R_TEMPERTURE      0x180EFDF5
-#define R_PACK_INFO       0x1820FDF5
-#define R_CCURRENT_OVER   0x1822FDF5
-#define R_PCURRENT_OVET   0x1823FDF5
-#define R_CTEMP_OVER      0x1824FDF5
-#define R_PTEMP_OVER      0x1825FDF5
-#define R_CTEMP_LOW       0x1826FDF5
-#define R_PTEMP_LOW       0x1827FDF5
-#define R_CELLVOLO        0x1828FDF5
-#define R_WRITEMCU        0x1830FDF5
-#define R_READMCU         0x1831FDF5
-#define R_READDATA        0x1840FDF5
+//接收到广播数据的标示符
+#define BRO_SYS_WARN        0x180150F4  //电压、总电流、故障报警状态等
+#define BRO_BATT_INFO       0x180250F4
+#define BRO_CELLV_INFO      0x180350F4
+#define BRO_CELLT_INFO      0x180450F4
+#define BRO_CELL_VOLT1      0x181050F4
+#define BRO_CELL_VOLT2      0x181150F4
+#define BRO_CELL_VOLT3      0x181250F4
+#define BRO_CELL_VOLT4      0x181350F4
+#define BRO_CELL_VOLT5      0x181450F4
+#define BRO_TEMP_01         0x182050F4
+
+// GUI发送数据请求的标示符
+#define REQ_BMS_VERSION     0x1800F4FD
+#define REQ_BATT_STAT       0x1801F4FD
+#define REQ_CELL_STAT       0x1802F4FD
+#define REQ_PACK_SOH        0x180CF4FD
+#define REQ_PACK_WARN       0x180DF4FD
+#define REQ_PACK_PRA        0x1820F4FD
+#define REQ_READ_COC        0x1822F4FD
+#define REQ_READ_DOC        0x1823F4FD
+#define REQ_READ_COT        0x1824F4FD
+#define REQ_READ_DOT        0x1825F4FD
+#define REQ_READ_CUT        0x1826F4FD
+#define REQ_READ_DUT        0x1827F4FD
+#define REQ_READ_OUC        0x1828F4FD
+
+#define REQ_READ_NOR        0x1840F4FD // SOH 三次错误记录
+#define REQ_FALT_OC         0x1841F4FD // 过流
+#define REQ_FALT_OUV        0x1842F4FD // 过欠压
+#define REQ_FALT_COUT       0x1843F4FD // 充电高低温
+#define REQ_FALT_DOUT       0x1844F4FD // 放电高低温
+#define REQ_FALT_HARD       0x1846F4FD // 系统硬件故障 目前主要是6803
+
+// GUI接收到所请求数据的标示符
+#define REC_BMS_VERSION     0x1800FDF4
+#define REC_BATT_STAT       0x1801FDF4
+#define REC_CELL_STAT       0x1802FDF4
+#define REC_PACK_SOH        0x180CFDF4
+#define REC_PACK_WARN       0x180DFDF4
+#define REC_PACK_PRA        0x1820FDF4
+#define REC_READ_COC        0x1822FDF4
+#define REC_READ_DOC        0x1823FDF4
+#define REC_READ_COT        0x1824FDF4
+#define REC_READ_DOT        0x1825FDF4
+#define REC_READ_CUT        0x1826FDF4
+#define REC_READ_DUT        0x1827FDF4
+#define REC_READ_OUC        0x1828FDF4
+
+#define REC_READ_NOR        0x1840FDF4 // SOH 三次错误记录
+#define REC_FALT_OC         0x1841FDF4 // 过流
+#define REC_FALT_OUV        0x1842FDF4 // 过欠压
+#define REC_FALT_COUT       0x1843FDF4 // 充电高低温
+#define REC_FALT_DOUT       0x1844FDF4 // 放电高低温
+#define REC_FALT_HARD       0x1846FDF4 // 系统硬件故障 目前主要是6803
+
+// GUI读写内部EEPROM
+#define REQ_WRITE_EEPROM        0x1830F4FD
+#define REQ_READ_EEPROM         0x1830F4FD
+
+// 上位机配置BMS部分参数
+#define  CAN_GUI_CONFIG_COV_TH                 ((uint8_t)0x10)
+#define  CAN_GUI_CONFIG_CUV_TH                 ((uint8_t)0x11)
+#define  CAN_GUI_CONFIG_COT_TH                 ((uint8_t)0x12)
+#define  CAN_GUI_CONFIG_CUT_TH                 ((uint8_t)0x13)
+#define  CAN_GUI_CONFIG_DOT_TH                 ((uint8_t)0x14)
+#define  CAN_GUI_CONFIG_DUT_TH                 ((uint8_t)0x15)
+#define  CAN_GUI_CONFIG_COC_TH                 ((uint8_t)0x16)
+#define  CAN_GUI_CONFIG_DOC_TH                 ((uint8_t)0x17)
+#define  CAN_GUI_CONFIG_DLV_TH                 ((uint8_t)0x18)
+#define  CAN_GUI_CONFIG_DLT_TH                 ((uint8_t)0x19)
+#define  CAN_GUI_CONFIG_POV_TH                  0x1A
+#define  CAN_GUI_CONFIG_PUV_TH                  0x1B
+#define  CAN_GUI_CONFIG_ISO_TH                  0x1C
 
 class CanBus;
 class QTableView;
@@ -89,9 +119,6 @@ public:
     ushort getCellVolt(uchar num);
     char getCellTemp(uchar num);
     ushort getChgCircNum();         //充放电循环次数
-    ushort getChgCurOverNum();      //充电过流故障发生次数
-    ushort getCellVoltOverNum();    //Cell过压故障次数
-
     void getCellsVoltage(float cellVol[], int len);//获取所有电芯实时电压
 
     void timerStart(void){m_timer->start();}
