@@ -25,7 +25,8 @@ SOURCES +=\
     TableView2Excel.cpp \
     ParseHex.cpp \
     DownLoadUi.cpp \
-    Main.cpp
+    Main.cpp \
+    SysPraModel.cpp
 
 HEADERS  += MainWindow.h \
     VoltageUI.h \
@@ -42,11 +43,14 @@ HEADERS  += MainWindow.h \
     ExcelEngine.h \
     TableView2Excel.h \
     DownLoadUi.h \
-    ParseHex.h
+    ParseHex.h \
+    SysPraModel.h \
+    Header.h
 
 FORMS    += mainwindow.ui \
     devsetdialog.ui \
-    DownLoadUi.ui
+    DownLoadUi.ui \
+    SysPraModel.ui
 
 RESOURCES += \
     src.qrc

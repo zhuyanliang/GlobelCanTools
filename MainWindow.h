@@ -18,6 +18,7 @@ class QLabel;
 class DevSetDialog;
 class QStandardItemModel;
 class ExcelEngine;
+class SysPraModel;
 
 namespace Ui {
 class MainWindow;
@@ -28,7 +29,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 private:
-    QTimer * m_timer;
+    QTimer *m_timer;
+    QTimer *m_timerSysPra;
     BatterySoc* m_batterySoc;
     VoltageUI* m_voltageui;
     AmpereMeter * ampereMeter;
@@ -38,8 +40,10 @@ private:
     CellMinMaxInfo* m_cellMinMaxInfoUi;
     DevSetDialog* m_devsetdlg;
     DataProcess* m_dataProcess;
+    SysPraModel* sysPraModel;
 
     QStandardItemModel *model;
+
 protected:
      void closeEvent(QCloseEvent *event);
 public:
@@ -62,6 +66,8 @@ private slots:
     void on_pushButtonOutputData_clicked();
 
     void on_pushButtonWritePrograme_clicked();
+
+    void on_pushButtonWritePra_clicked();
 
 private:
     Ui::MainWindow *ui;

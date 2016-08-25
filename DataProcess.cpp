@@ -9,6 +9,7 @@
 #include <QTableView>
 #include <QStandardItemModel>
 #include "TableView2Excel.h"
+#include "Header.h"
 #include <QMessageBox>
 #include <QCoreApplication>
 
@@ -25,11 +26,12 @@ DataProcess::DataProcess()
 
 void DataProcess::onTimeout()
 {
-    //sendGetDataRequest();
+    sendGetDataRequest();
+    //接收数据
     receiveData();
 }
 
-int DataProcess::receiveData()
+int DataProcess::receiveData(void)
 {
     static VCI_CAN_OBJ dataTemp[64];
     static int devType = m_can->getDevType();
@@ -63,26 +65,65 @@ void DataProcess::sendGetDataRequest()
     static int devType = m_can->getDevType();
     static int devIndex = m_can->getDevIndex();
     static int canIndex = m_can->getCanIndex();
-    static VCI_CAN_OBJ sendFrame[1];
+    static VCI_CAN_OBJ sendFrame;
 
-    sendFrame[0].SendType = 0;
-    sendFrame[0].RemoteFlag = 1;
-    sendFrame[0].ExternFlag = 1;
-    sendFrame[0].DataLen = 0;
+    sendFrame.SendType = 0;
+    sendFrame.RemoteFlag = 1;
+    sendFrame.ExternFlag = 1;
+    sendFrame.DataLen = 0;
 
     switch(m_requestNum++)
     {
+    case 0:
+        sendFrame.ID = REQ_PACK_PRA;
+        break;
+    case 1:
+        sendFrame.ID = REQ_READ_COC;
+        break;
+    case 2:
+        sendFrame.ID = REQ_READ_DOC;
+        break;
+    case 3:
+        sendFrame.ID = REQ_READ_COT;
+        break;
+    case 4:
+        sendFrame.ID = REQ_READ_DOT;
+        break;
+    case 5:
+        sendFrame.ID = REQ_READ_CUT;
+        break;
+    case 6:
+        sendFrame.ID = REQ_READ_DUT;
+        break;
+    case 7:
+        sendFrame.ID = REQ_READ_OUC;
+        break;
+    case 8:
+        sendFrame.ID = REQ_READ_IMB;
+        break;
+    case 9:
+        sendFrame.ID = REQ_READ_NOR;
+        break;
+    case 10:
+        sendFrame.ID = REQ_FALT_OC;
+        break;
+    case 11:
+        sendFrame.ID = REQ_FALT_OUV;
+        break;
+    case 12:
+        sendFrame.ID = REQ_FALT_COUT;
+        break;
+    case 13:
+        sendFrame.ID = REQ_FALT_DOUT;
+        break;
+    case 14:
+        sendFrame.ID = REQ_FALT_HARD;
+        break;
+    default:
+        m_requestNum = 0;
     }
-    if(m_can->CanTransmit(devType,devIndex,canIndex,sendFrame,1))
-        qDebug() << "sendGetDataRequest success";
-    else
-        qDebug() << "sendGetDataRequest error";
-}
 
-
-int DataProcess::dataAnalyze()
-{
-    return 0;
+    m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1);
 }
 
 int DataProcess::dataStore(QTableView *tableView,QStandardItemModel *model)
@@ -382,7 +423,6 @@ uchar DataProcess::getMaxCellTempNum()
     }
     else
         return 0;
-
 }
 
 ushort DataProcess::getChgCircNum()//充放电循环次数
@@ -400,6 +440,168 @@ ushort DataProcess::getChgCircNum()//充放电循环次数
         return 0;
 }
 
+void DataProcess::getPackPra(unsigned char *buf,int len)
+{
+    if(m_dataRecv.contains(REC_PACK_PRA) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_PACK_PRA);
 
+        memcpy(buf,dat.Data,len);
+    }
+}
 
+void DataProcess::getPackCOC(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_COC) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_COC);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getPackDOC(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_DOC) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_DOC);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getPackCOT(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_COT) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_COT);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getPackDOT(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_DOT) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_DOT);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getPackCUT(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_CUT) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_CUT);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getPackDUT(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_DUT) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_DUT);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+// 电芯的高低压设置
+void DataProcess::getCellOUC(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_OUC) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_OUC);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getCellIBM(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_IMB) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_IMB);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getPackDIT(unsigned char *buf, int len)
+{
+
+}
+
+void DataProcess::getPackOV(unsigned char *buf, int len)
+{
+
+}
+void DataProcess::DataProcess::getPackUV(unsigned char *buf, int len)
+{
+
+}
+
+void DataProcess::getNorRec(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_READ_NOR) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_NOR);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getOCRec(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_FALT_OC) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_OC);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getOUVRec(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_FALT_OUV) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_OUV);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getCOUTRec(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_FALT_COUT) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_COUT);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getDOUTRec(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_FALT_DOUT) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_DOUT);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
+void DataProcess::getLtcRec(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(REC_FALT_HARD) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_HARD);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
 

@@ -79,7 +79,7 @@
         <height>501</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="2,1">
          <item>
@@ -271,8 +271,146 @@
             </sizepolicy>
            </property>
            <property name="title">
-            <string>错误信息</string>
+            <string>错误发生次数</string>
            </property>
+           <widget class="QWidget" name="layoutWidget">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>20</y>
+              <width>121</width>
+              <height>248</height>
+             </rect>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelCOC">
+                 <property name="text">
+                  <string>COC：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditCOC"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelDOC">
+                 <property name="text">
+                  <string>DOC：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditDOC"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelCOV">
+                 <property name="text">
+                  <string>COV：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditCOV"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelCUV">
+                 <property name="text">
+                  <string>CUV：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditCUV"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelCOT">
+                 <property name="text">
+                  <string>COT：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditCOT"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelCUT">
+                 <property name="text">
+                  <string>CUT：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditCUT"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelDOT">
+                 <property name="text">
+                  <string>DOT：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditDOT"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelDUT">
+                 <property name="text">
+                  <string>DUT：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditDUT"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_19" stretch="1,3">
+               <item>
+                <widget class="QLabel" name="labelLTC_COM">
+                 <property name="text">
+                  <string>LTC：</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEditLTC_COM"/>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </widget>
          </item>
         </layout>
@@ -293,7 +431,7 @@
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>381</width>
+            <width>385</width>
             <height>231</height>
            </rect>
           </property>
@@ -573,32 +711,6 @@
      <attribute name="title">
       <string>设置</string>
      </attribute>
-     <widget class="QPushButton" name="pushButtonWritePrograme">
-      <property name="geometry">
-       <rect>
-        <x>900</x>
-        <y>450</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>烧写程序</string>
-      </property>
-     </widget>
-     <widget class="QGroupBox" name="groupBoxSysPra">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>20</y>
-        <width>311</width>
-        <height>491</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>系统参数</string>
-      </property>
-     </widget>
     </widget>
    </widget>
    <widget class="QLabel" name="labelDevStatus">
@@ -633,6 +745,19 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonWritePrograme">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>10</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>烧写程序</string>
     </property>
    </widget>
   </widget>

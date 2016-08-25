@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QLineEdit>
 
+class QGroupBox;
 class QGridLayout;
 
 class CellMinMaxInfo : public QWidget
@@ -12,6 +13,7 @@ class CellMinMaxInfo : public QWidget
     Q_OBJECT
 
 private:
+    QGroupBox *groupBox;
     QLabel* labelMaxCellVol;
     QLabel* labelMaxVPos;
     QLabel* labelMinCellVol;
@@ -22,9 +24,7 @@ private:
     QLabel* labelMinCellTemp;
     QLabel* labelMinTPos;
     QLabel* labelDltT;
-
-
-
+    QLabel* labelCycTimes;
     QGridLayout* gridLayout;
 
 public:
@@ -40,7 +40,7 @@ public:
     QLineEdit* lineEditMinCellTemp;
     QLineEdit* lineEditMinTPos;
     QLineEdit* lineEditDltT;
-    
+    QLineEdit* lineEditCycTimes;
 signals:
     
 public slots:

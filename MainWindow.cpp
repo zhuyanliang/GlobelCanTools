@@ -13,6 +13,7 @@
 #include "ExcelEngine.h"
 #include "TableView2Excel.h"
 #include "DownLoadUi.h"
+#include "SysPraModel.h"
 
 const char* IndictorLabelText[IndictorLightNum] = {
     "控制器通信","BMS间通信","温度模块通信",
@@ -33,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
             this,SLOT(dataReceived(VCI_CAN_OBJ&)),Qt::DirectConnection);
 
     ui->pushButtonOutputData->setEnabled(false);
-    //测试用的定时器
+
+    //电池信息用的定时器
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
     connect(m_timer,SIGNAL(timeout()),this,SLOT(TimeUpdate()));
@@ -46,9 +48,10 @@ void MainWindow::initUI()
 
     //CAN数据处理器
     m_dataProcess = new DataProcess();
-    m_dataProcess->setTimerInterval(10); //500ms接收一次数据
-
-    //m_thread->start();
+    m_dataProcess->setTimerInterval(100); //50ms接收一次数据
+    sysPraModel = new SysPraModel(m_dataProcess,ui->tabSet);
+    sysPraModel->move(0,5);
+    sysPraModel->show();
 
     //CAN设备设置界面初始化
     m_devsetdlg = new DevSetDialog(this);
@@ -181,6 +184,16 @@ void MainWindow::initUI()
     ui->lineEditCell18->setReadOnly(true);
     ui->lineEditCell19->setReadOnly(true);
     ui->lineEditCell20->setReadOnly(true);
+
+    ui->lineEditCOC->setReadOnly(true);
+    ui->lineEditDOC->setReadOnly(true);
+    ui->lineEditCOV->setReadOnly(true);
+    ui->lineEditCUV->setReadOnly(true);
+    ui->lineEditCOT->setReadOnly(true);
+    ui->lineEditCUT->setReadOnly(true);
+    ui->lineEditDOT->setReadOnly(true);
+    ui->lineEditDUT->setReadOnly(true);
+    ui->lineEditLTC_COM->setReadOnly(true);
 }
 
 void MainWindow::TimeUpdate(void)
@@ -258,7 +271,59 @@ void MainWindow::TimeUpdate(void)
     ui->lineEditTemp03->setText(QString::number(m_dataProcess->getCellTemp(2)));
     ui->lineEditTemp04->setText(QString::number(m_dataProcess->getCellTemp(3)));
 
-    //m_dataProcess->getAllData().clear();
+    //系统参数刷新
+    unsigned char readData[8] = {0};
+    short tempData = 0;
+
+    // NOR_REC
+    memset(readData,0,8);
+    tempData = 0;
+    m_dataProcess->getNorRec(readData,8);
+    tempData = ((readData[1]<<8)+readData[0]);
+    m_cellMinMaxInfoUi->lineEditCycTimes->setText(QString::number(tempData));
+
+    // FALT_OC
+    memset(readData,0,8);
+    tempData = 0;
+    m_dataProcess->getOCRec(readData,8);
+    tempData = ((readData[1]<<8)+readData[0]);
+    ui->lineEditCOC->setText(QString::number(tempData));
+    tempData = ((readData[5]<<8)+readData[4]);
+    ui->lineEditDOC->setText(QString::number(tempData));
+
+    //OUV
+    memset(readData,0,8);
+    tempData = 0;
+    m_dataProcess->getOUVRec(readData,8);
+    tempData = ((readData[1]<<8)+readData[0]);
+    ui->lineEditCOV->setText(QString::number(tempData));
+    tempData = ((readData[5]<<8)+readData[4]);
+    ui->lineEditCUV->setText(QString::number(tempData));
+
+    // COUT
+    memset(readData,0,8);
+    tempData = 0;
+    m_dataProcess->getCOUTRec(readData,8);
+    tempData = ((readData[1]<<8)+readData[0]);
+    ui->lineEditCOT->setText(QString::number(tempData));
+    tempData = ((readData[5]<<8)+readData[4]);
+    ui->lineEditCUT->setText(QString::number(tempData));
+
+    // DOUT
+    memset(readData,0,8);
+    tempData = 0;
+    m_dataProcess->getDOUTRec(readData,8);
+    tempData = ((readData[1]<<8)+readData[0]);
+    ui->lineEditDOT->setText(QString::number(tempData));
+    tempData = ((readData[5]<<8)+readData[4]);
+    ui->lineEditDUT->setText(QString::number(tempData));
+
+    // HARD  LTC6803
+    memset(readData,0,8);
+    tempData = 0;
+    m_dataProcess->getLtcRec(readData,8);
+    tempData = ((readData[1]<<8)+readData[0]);
+    ui->lineEditLTC_COM->setText(QString::number(tempData));
 }
 
 void MainWindow::dataReceived(VCI_CAN_OBJ &data)
@@ -359,9 +424,10 @@ void MainWindow::on_pushButtonOpen_clicked()
             ui->pushButtonOpen->setIcon(icon);
             //启动CAN发送接收
             m_dataProcess->timerStart();
+
+            ui->pushButtonOutputData->setEnabled(false);
+            ui->pushButtonWritePrograme->setEnabled(true);
         }
-        ui->pushButtonOutputData->setEnabled(false);
-        ui->pushButtonWritePrograme->setEnabled(true);
     }
 }
 
@@ -447,31 +513,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::on_pushButtonWritePrograme_clicked()
 {
-#if 0
-    int devType = m_devsetdlg->getCan()->getDevType();
-    int devIndex = m_devsetdlg->getCan()->getDevIndex();
-    int canIndex = m_devsetdlg->getCan()->getCanIndex();
-
-    static VCI_CAN_OBJ sendFrame;
-
-    sendFrame.SendType = 0;
-    sendFrame.RemoteFlag = 1;
-    sendFrame.ExternFlag = 1;
-    sendFrame.DataLen = 8;
-
-    sendFrame[0].ID = 0x18F0F5FD;
-
-    sendFrame.Data[0] = 0x01;
-    sendFrame.Data[1] = 0x23;
-    sendFrame.Data[2] = 0x45;
-    sendFrame.Data[3] = 0x67;
-    sendFrame.Data[4] = 0x89;
-    sendFrame.Data[5] = 0xAB;
-    sendFrame.Data[6] = 0xCD;
-    sendFrame.Data[7] = 0xEF;
-
-    m_devsetdlg->getCan()->CanTransmit(devType,devIndex,canIndex,&sendFrame,1);
-#endif
     m_timer->stop();
     m_dataProcess->timerStop();
 
@@ -481,3 +522,5 @@ void MainWindow::on_pushButtonWritePrograme_clicked()
     m_timer->start();
     m_dataProcess->timerStart();
 }
+
+

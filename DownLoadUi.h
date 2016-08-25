@@ -6,23 +6,6 @@
 #include <QProgressDialog>
 #include "ControlCAN.h"
 
-//Commands
-#define WR_END  0x01 //
-#define WR_MEM  0x02 //写程序存储器
-#define ER_MEM  0x03 //擦除程序存储器
-#define RUN_APP 0x04
-
-#define GUI             ((unsigned char)0xFD)
-#define BMS             ((unsigned char)0xF4)
-
-//Function
-#define CAN_MSG_IMAGE_ERASE     ((unsigned char)0xF0)
-#define CAN_MSG_IMAGE_REQUEST   ((unsigned char)0xF1) //请求App下载数据
-#define CAN_MSG_IMAGE_LOAD      ((unsigned char)0xF2)
-#define CAN_MSG_OVER_LOAD       ((unsigned char)0xF3) // 下载数据结束标志
-#define CAN_MSG_REQ_NEXT        ((unsigned char)0xF4) // 请求下一帧数据
-#define CAN_MSG_REQ_AGAIN       ((unsigned char)0xF5) // 请求重新发送该帧数据
-
 class ParseHex;
 class CanBus;
 

@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include "ParseHex.h"
 #include "CanBus.h"
+#include "Header.h"
 #include <QDebug>
 
 /*-------------- CRC lookup table --------------*/
@@ -60,7 +61,7 @@ uint8_t calculate_crc8(uint8_t* ptr, uint8_t len)
    return crc;
 }
 
-unsigned int CAN_Generate_ID(unsigned char msg_fc, unsigned char crc)
+static unsigned int CAN_Generate_ID(unsigned char msg_fc, unsigned char crc)
 {
     unsigned int temp = 0;
 
@@ -268,6 +269,4 @@ void DownLoadUi::FillCodeData()
     m_canData.ExternFlag = 1;
     m_canData.RemoteFlag = 0;
     m_canData.ID = CAN_Generate_ID(CAN_MSG_IMAGE_LOAD,crc);
-
-
 }
