@@ -26,7 +26,8 @@ SOURCES +=\
     ParseHex.cpp \
     DownLoadUi.cpp \
     Main.cpp \
-    SysPraModel.cpp
+    SysPraModel.cpp \
+    XmlConfig.cpp
 
 HEADERS  += MainWindow.h \
     VoltageUI.h \
@@ -45,7 +46,8 @@ HEADERS  += MainWindow.h \
     DownLoadUi.h \
     ParseHex.h \
     SysPraModel.h \
-    Header.h
+    Header.h \
+    XmlConfig.h
 
 FORMS    += mainwindow.ui \
     devsetdialog.ui \

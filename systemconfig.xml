@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<systemconfig>
+	<cov cov1="4100" cov2="4180"/>  	<!-- 单体过压-->
+	<cuv cuv1="3100" cuv2="3000"/>  	<!-- 单体欠压-->
+	<pcot pcot1="40" pcot2="45"/>		<!-- 电池包充电高温-->
+	<pcut pcut1="-5" pcut2="-10">		<!-- 电池包充电低温-->
+	<pdot pdot1="50" pdot2="55"/>		<!-- 电池包放电高温-->
+	<pdut pcut1="-5" pdut2="-10">		<!-- 电池包放电低温-->
+	<pcoc pcoc1="20" pcoc2="25">		<!-- 电池包充电过流-->
+	<pdoc pdoc1="200" pdoc2="250">		<!-- 电池包放电过流-->
+	<pdit pdit1="5" pdit2="10">			<!-- 电池包放温差-->
+	<pov pov1="82" pov2="85">			<!-- 电池包过压-->
+	<puv puv1="65" puv2="60">			<!-- 电池包欠压-->
+	<dim dim1="100" dim2="150">			<!-- 电池包欠压-->
+</systemconfig>

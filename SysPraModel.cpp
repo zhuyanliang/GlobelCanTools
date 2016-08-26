@@ -3,6 +3,9 @@
 #include <QStandardItemModel>
 #include "DataProcess.h"
 #include "Header.h"
+#include <QDebug>
+#include <QFileDialog>
+#include <QMessageBox>
 
 SysPraModel::SysPraModel(DataProcess *datpress,QWidget *parent) :
     QWidget(parent),
@@ -16,8 +19,10 @@ SysPraModel::SysPraModel(DataProcess *datpress,QWidget *parent) :
     m_timer->start();
 
     m_modelSysPra = new QStandardItemModel();
-    InitUI();
+    m_can = CanBus::getInstance();
 
+    ui->pushButtonWritePra->setEnabled(false);
+    InitUI();
 }
 
 SysPraModel::~SysPraModel()
@@ -266,6 +271,12 @@ void SysPraModel::onTime(void)
     m_modelSysPra->setItem(22,1,new QStandardItem(QString::number(tempData)));
     tempData = ((readData[3]<<8)+readData[2]);
     m_modelSysPra->setItem(23,1,new QStandardItem(QString::number(tempData)));
+
+
+    if(m_can->getIsStart())
+        ui->pushButtonWritePra->setEnabled(true);
+    else
+        ui->pushButtonWritePra->setEnabled(false);
 }
 
 uint32_t CAN_GenerateID(uint8_t msg_fc)
@@ -277,23 +288,18 @@ uint32_t CAN_GenerateID(uint8_t msg_fc)
     return temp;
 }
 
-#if 0
 // 写入设置的参数
-void MainWindow::on_pushButtonWritePra_clicked()
+void SysPraModel::on_pushButtonWritePra_clicked()
 {
-    static int devType = m_devsetdlg->getCan()->getDevType();
-    static int devIndex = m_devsetdlg->getCan()->getDevIndex();
-    static int canIndex = m_devsetdlg->getCan()->getCanIndex();
+    static int devType = m_can->getDevType();
+    static int devIndex = m_can->getDevIndex();
+    static int canIndex = m_can->getCanIndex();
     unsigned short data[3] = {0};
     static VCI_CAN_OBJ sendFrame[3];
 
     data[0] = ui->spinBoxCOV->text().toInt();
     data[1] = ui->spinBoxCUV->text().toInt();
     data[2] = ui->spinBoxCOT->text().toInt();
-
-    qDebug() << data[0];
-    qDebug() << data[1];
-    qDebug() << data[2];
 
     for(int i=0;i<3;i++)
     {
@@ -310,14 +316,27 @@ void MainWindow::on_pushButtonWritePra_clicked()
 
     for(int i=0;i<3;i++)
     {
-        if(m_devsetdlg->getCan()->CanTransmit(devType,devIndex,canIndex,&sendFrame[i],1))
+        if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame[i],1))
             qDebug() << "Write Success";
         else
             qDebug() << "Write failed";
     }
-    for(int i=0;i<100000;i++)
-        for(int j = 0;j<1000;j++);
-
 }
-#endif
 
+void SysPraModel::on_pushButtonImportConfig_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Import config file"),"",tr("Configfile(*.xml);;Allfile(*.*)"));
+
+    if(!fileName.isEmpty())
+    {
+        xmlconfig = new XmlConfig();
+
+        if(xmlconfig->readFile(fileName))
+        {
+            ui->lineEditConfigFilePath->setText(QFileInfo(fileName).canonicalFilePath());
+            ui->lineEditConfigFilePath->setVisible(true);
+            ui->pushButtonWritePra->setEnabled(true);
+        }
+
+    }
+}

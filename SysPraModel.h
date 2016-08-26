@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "DataProcess.h"
 #include <QTimer>
+#include "CanBus.h"
+#include "XmlConfig.h"
 
 namespace Ui {
 class SysPraModel;
@@ -24,12 +26,19 @@ public:
 private slots:
     void onTime(void);
 
+    void on_pushButtonWritePra_clicked();
+
+    void on_pushButtonImportConfig_clicked();
+
 private:
+    Ui::SysPraModel *ui;
     QTimer *m_timer;
     QStandardItemModel *m_modelSysPra;
+    QStandardItemModel *m_modelSysSetPra;
     DataProcess* m_dataProcess;
+    CanBus* m_can;
+    XmlConfig *xmlconfig;
 
-    Ui::SysPraModel *ui;
 };
 
 #endif // SYSPRAMODEL_H
