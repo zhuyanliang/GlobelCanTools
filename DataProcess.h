@@ -50,9 +50,9 @@ public:
     void getPackDOT(unsigned char *buf, int len);
     void getPackCUT(unsigned char *buf, int len);
     void getPackDUT(unsigned char *buf, int len);
-    void getCellOUC(unsigned char *buf, int len);
-    void getCellIBM(unsigned char *buf, int len);
-    void getPackDIT(unsigned char *buf, int len);
+    void getCellOUV(unsigned char *buf, int len);
+    void getCellDLV(unsigned char *buf, int len);
+    void getPackDLT(unsigned char *buf, int len);
     void getPackOV(unsigned char *buf, int len);
     void getPackUV(unsigned char *buf, int len);
 

@@ -6,11 +6,18 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QProgressDialog>
+#include <QElapsedTimer>
+#include <QColor>
+
+#define CONFIGNUM   12
+#define TIMEECLIPSE 500
 
 SysPraModel::SysPraModel(DataProcess *datpress,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SysPraModel),
-    m_dataProcess(datpress)
+    m_dataProcess(datpress),
+    xmlconfig(NULL)
 {
     ui->setupUi(this);
     m_timer = new QTimer(this);
@@ -22,6 +29,9 @@ SysPraModel::SysPraModel(DataProcess *datpress,QWidget *parent) :
     m_can = CanBus::getInstance();
 
     ui->pushButtonWritePra->setEnabled(false);
+    ui->textEditConfig->setFontPointSize(16);
+    ui->textEditConfig->setFontWeight(75);
+    ui->textEditConfig->setReadOnly(true);
     InitUI();
 }
 
@@ -164,15 +174,18 @@ void SysPraModel::onTime(void)
 
     //PACKPRA
     m_dataProcess->getPackPra(readData,8);
-    ui->labelSeriesNum->setText(QString::number(readData[0])+"个");
-    ui->labelParallelNum->setText(QString::number(readData[1])+"个");
-    unsigned short capacity = (readData[3]<<8)|readData[2];
+    ui->labelSeriesNum->setText(QString::number(readData[0]));
+    ui->labelSeriesNum->setFont(QFont("Times",18,QFont::Bold));
+    ui->labelParallelNum->setText(QString::number(readData[1]));
+    ui->labelParallelNum->setFont(QFont("Times",18,QFont::Bold));
+    unsigned short capacity = ((readData[3]<<8)|readData[2])/10;
     ui->labelCapacity->setText(QString::number(capacity)+"Ah");
+    ui->labelCapacity->setFont(QFont("Times",18,QFont::Bold));
 
-    // OUC 电芯高低压
+    // OUV 电芯高低压
     memset(readData,0,8);
     tempData = 0;
-    m_dataProcess->getCellOUC(readData,8);
+    m_dataProcess->getCellOUV(readData,8);
     tempData = ((readData[1]<<8)+readData[0]);
     m_modelSysPra->setItem(0,1,new QStandardItem(QString::number(tempData)));
     tempData = ((readData[3]<<8)+readData[2]);
@@ -195,36 +208,38 @@ void SysPraModel::onTime(void)
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getPackCUT(readData,8);
-    tempData = ((readData[3]<<8)+readData[2]);
-    m_modelSysPra->setItem(6,1,new QStandardItem(QString::number(tempData)));
     tempData = ((readData[1]<<8)+readData[0]);
+    m_modelSysPra->setItem(6,1,new QStandardItem(QString::number(tempData)));
+    tempData = ((readData[3]<<8)+readData[2]);
     m_modelSysPra->setItem(7,1,new QStandardItem(QString::number(tempData)));
 
     // DOT
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getPackDOT(readData,8);
-    tempData = ((readData[3]<<8)+readData[2]);
-    m_modelSysPra->setItem(8,1,new QStandardItem(QString::number(tempData)));
     tempData = ((readData[1]<<8)+readData[0]);
+    m_modelSysPra->setItem(8,1,new QStandardItem(QString::number(tempData)));
+    tempData = ((readData[3]<<8)+readData[2]);
     m_modelSysPra->setItem(9,1,new QStandardItem(QString::number(tempData)));
 
     // DUT
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getPackDUT(readData,8);
-    tempData = ((readData[3]<<8)+readData[2]);
-    m_modelSysPra->setItem(10,1,new QStandardItem(QString::number(tempData)));
     tempData = ((readData[1]<<8)+readData[0]);
+    m_modelSysPra->setItem(10,1,new QStandardItem(QString::number(tempData)));
+    tempData = ((readData[3]<<8)+readData[2]);
     m_modelSysPra->setItem(11,1,new QStandardItem(QString::number(tempData)));
 
     // COC
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getPackCOC(readData,8);
-    tempData = ((readData[1]<<8)+readData[0])/10;
+    tempData = (readData[1]<<8)+readData[0];
+    tempData /= 10;
     m_modelSysPra->setItem(12,1,new QStandardItem(QString::number(tempData)));
-    tempData = ((readData[4]<<8)+readData[3])/10;
+    tempData = (readData[3]<<8)+readData[2];
+    tempData /= 10;
     m_modelSysPra->setItem(13,1,new QStandardItem(QString::number(tempData)));
 
     // DOC
@@ -233,16 +248,16 @@ void SysPraModel::onTime(void)
     m_dataProcess->getPackDOC(readData,8);
     tempData = ((readData[1]<<8)+readData[0])/10;
     m_modelSysPra->setItem(14,1,new QStandardItem(QString::number(tempData)));
-    tempData = ((readData[4]<<8)+readData[3])/10;
+    tempData = ((readData[3]<<8)+readData[2])/10;
     m_modelSysPra->setItem(15,1,new QStandardItem(QString::number(tempData)));
 
-    // PDIT 电池包温差
+    // PDLT 电池包温差
     memset(readData,0,8);
     tempData = 0;
-    m_dataProcess->getPackDIT(readData,8);
-    tempData = ((readData[1]<<8)+readData[0])/10;
+    m_dataProcess->getPackDLT(readData,8);
+    tempData = (readData[1]<<8)+readData[0];
     m_modelSysPra->setItem(16,1,new QStandardItem(QString::number(tempData)));
-    tempData = ((readData[3]<<8)+readData[2])/10;
+    tempData = (readData[3]<<8)+readData[2];
     m_modelSysPra->setItem(17,1,new QStandardItem(QString::number(tempData)));
 
     // 电池包过压
@@ -266,17 +281,22 @@ void SysPraModel::onTime(void)
     // IBM 单体一致性
     memset(readData,0,8);
     tempData = 0;
-    m_dataProcess->getCellIBM(readData,8);
+    m_dataProcess->getCellDLV(readData,8);
     tempData = ((readData[1]<<8)+readData[0]);
     m_modelSysPra->setItem(22,1,new QStandardItem(QString::number(tempData)));
     tempData = ((readData[3]<<8)+readData[2]);
     m_modelSysPra->setItem(23,1,new QStandardItem(QString::number(tempData)));
 
 
-    if(m_can->getIsStart())
-        ui->pushButtonWritePra->setEnabled(true);
+    if(m_can->getIsStart() && (xmlconfig!=NULL))
+    {
+        if(xmlconfig->readXmlok)
+            ui->pushButtonWritePra->setEnabled(true);
+    }
     else
+    {
         ui->pushButtonWritePra->setEnabled(false);
+    }
 }
 
 uint32_t CAN_GenerateID(uint8_t msg_fc)
@@ -288,44 +308,9 @@ uint32_t CAN_GenerateID(uint8_t msg_fc)
     return temp;
 }
 
-// 写入设置的参数
-void SysPraModel::on_pushButtonWritePra_clicked()
-{
-    static int devType = m_can->getDevType();
-    static int devIndex = m_can->getDevIndex();
-    static int canIndex = m_can->getCanIndex();
-    unsigned short data[3] = {0};
-    static VCI_CAN_OBJ sendFrame[3];
-
-    data[0] = ui->spinBoxCOV->text().toInt();
-    data[1] = ui->spinBoxCUV->text().toInt();
-    data[2] = ui->spinBoxCOT->text().toInt();
-
-    for(int i=0;i<3;i++)
-    {
-        sendFrame[i].SendType = 0;
-        sendFrame[i].RemoteFlag = 0;
-        sendFrame[i].ExternFlag = 1;
-        sendFrame[i].DataLen = 8;
-        sendFrame[i].Data[0] = data[i]&0xFF;
-        sendFrame[i].Data[1] = (data[i]>>8)&0xFF;
-        sendFrame[i].Data[2] = (data[i])&0xFF;
-        sendFrame[i].Data[3] = (data[i]>>8)&0xFF;
-        sendFrame[i].ID = CAN_GenerateID(CAN_GUI_CONFIG_COV_TH+i);
-    }
-
-    for(int i=0;i<3;i++)
-    {
-        if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame[i],1))
-            qDebug() << "Write Success";
-        else
-            qDebug() << "Write failed";
-    }
-}
-
 void SysPraModel::on_pushButtonImportConfig_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Import config file"),"",tr("Configfile(*.xml);;Allfile(*.*)"));
+    QString fileName = QFileDialog::getOpenFileName(this,tr("导入配置文件"),"",tr("配置文件(*.xml);;所有(*.*)"));
 
     if(!fileName.isEmpty())
     {
@@ -334,9 +319,332 @@ void SysPraModel::on_pushButtonImportConfig_clicked()
         if(xmlconfig->readFile(fileName))
         {
             ui->lineEditConfigFilePath->setText(QFileInfo(fileName).canonicalFilePath());
-            ui->lineEditConfigFilePath->setVisible(true);
             ui->pushButtonWritePra->setEnabled(true);
+
+            QMapIterator<QString, short> i(xmlconfig->getValue());
+            while (i.hasNext())
+            {
+                i.next();
+                QString text = i.key();
+                text += ": ";
+                text += QString::number(i.value());
+                ui->textEditConfig->append(text);
+            }
         }
 
     }
+}
+
+// 写入设置的参数
+void SysPraModel::on_pushButtonWritePra_clicked()
+{
+    int devType = m_can->getDevType();
+    int devIndex = m_can->getDevIndex();
+    int canIndex = m_can->getCanIndex();
+    unsigned int sendData = 0;
+    VCI_CAN_OBJ sendFrame = {0};
+    QElapsedTimer t;
+    unsigned char configNum = 0;
+
+    QProgressDialog progress("系统参数配置中...", "终止配置", 0, CONFIGNUM, this);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setValue(configNum++);
+    progress.show();
+
+    sendFrame.SendType = 0;
+    sendFrame.RemoteFlag = 0;
+    sendFrame.ExternFlag = 1;
+    sendFrame.DataLen = 8;
+
+    if(xmlconfig == NULL)
+        return;
+
+    // COV
+    if(xmlconfig->getValue().contains("cov1"))
+    {
+        sendData = xmlconfig->getValue().value("cov1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("cov2"))
+    {
+        sendData = xmlconfig->getValue().value("cov2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_COV_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+
+    t.start();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+    // CUV
+    if(xmlconfig->getValue().contains("cuv1"))
+    {
+        sendData = xmlconfig->getValue().value("cuv1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("cuv2"))
+    {
+        sendData = xmlconfig->getValue().value("cuv2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_CUV_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PCOT
+    if(xmlconfig->getValue().contains("pcot1"))
+    {
+        sendData = xmlconfig->getValue().value("pcot1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("pcot2"))
+    {
+        sendData = xmlconfig->getValue().value("pcot2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_COT_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PCUT
+    if(xmlconfig->getValue().contains("pcut1"))
+    {
+        sendData = xmlconfig->getValue().value("pcut1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("pcut2"))
+    {
+        sendData = xmlconfig->getValue().value("pcut2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_CUT_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PDOT
+    if(xmlconfig->getValue().contains("pdot1"))
+    {
+        sendData = xmlconfig->getValue().value("pdot1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("pdot2"))
+    {
+        sendData = xmlconfig->getValue().value("pdot2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_DOT_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PDUT
+    if(xmlconfig->getValue().contains("pdut1"))
+    {
+        sendData = xmlconfig->getValue().value("pdut1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("pdut2"))
+    {
+        sendData = xmlconfig->getValue().value("pdut2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_DUT_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PCOC
+    if(xmlconfig->getValue().contains("pcoc1"))
+    {
+        sendData = xmlconfig->getValue().value("pcoc1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("pcoc2"))
+    {
+        sendData = xmlconfig->getValue().value("pcoc2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_COC_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PDOC
+    if(xmlconfig->getValue().contains("pdoc1"))
+    {
+        sendData = xmlconfig->getValue().value("pdoc1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("pdoc2"))
+    {
+        sendData = xmlconfig->getValue().value("pdoc2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_DOC_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PDLV
+    if(xmlconfig->getValue().contains("dlv1"))
+    {
+        sendData = xmlconfig->getValue().value("dlv1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("dlv2"))
+    {
+        sendData = xmlconfig->getValue().value("dlv2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_DLV_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PDLT
+    if(xmlconfig->getValue().contains("pdlt1"))
+    {
+        sendData = xmlconfig->getValue().value("pdlt1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("pdlt2"))
+    {
+        sendData = xmlconfig->getValue().value("pdlt2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_DLT_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // POV
+    if(xmlconfig->getValue().contains("pov1"))
+    {
+        sendData = xmlconfig->getValue().value("pov1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("pov2"))
+    {
+        sendData = xmlconfig->getValue().value("pov2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_POV_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
+    // PUV
+    if(xmlconfig->getValue().contains("puv1"))
+    {
+        sendData = xmlconfig->getValue().value("puv1");
+    }
+    sendFrame.Data[0] = sendData&0xFF;
+    sendFrame.Data[1] = (sendData>>8)&0xFF;
+    if(xmlconfig->getValue().contains("puv2"))
+    {
+        sendData = xmlconfig->getValue().value("puv2");
+    }
+    sendFrame.Data[2] = sendData&0xFF;
+    sendFrame.Data[3] = (sendData>>8)&0xFF;
+
+    sendFrame.ID = CAN_GenerateID(CAN_GUI_CONFIG_PUV_TH);
+    if(m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1))
+    {
+        qDebug() << "Write Success";
+        progress.setValue(configNum++);
+    }
+    t.restart();
+    while(t.elapsed()<TIMEECLIPSE)
+        QCoreApplication::processEvents();
+
 }

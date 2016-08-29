@@ -78,45 +78,54 @@ void DataProcess::sendGetDataRequest()
         sendFrame.ID = REQ_PACK_PRA;
         break;
     case 1:
-        sendFrame.ID = REQ_READ_COC;
+        sendFrame.ID = REQ_READ_OUV; // 电芯过、欠压参数
         break;
     case 2:
-        sendFrame.ID = REQ_READ_DOC;
+        sendFrame.ID = REQ_READ_COT;
         break;
     case 3:
-        sendFrame.ID = REQ_READ_COT;
+        sendFrame.ID = REQ_READ_CUT;
         break;
     case 4:
         sendFrame.ID = REQ_READ_DOT;
         break;
     case 5:
-        sendFrame.ID = REQ_READ_CUT;
-        break;
-    case 6:
         sendFrame.ID = REQ_READ_DUT;
         break;
+    case 6:
+        sendFrame.ID = REQ_READ_COC;
+        break;
     case 7:
-        sendFrame.ID = REQ_READ_OUC;
+        sendFrame.ID = REQ_READ_DOC;
         break;
     case 8:
-        sendFrame.ID = REQ_READ_IMB;
+        sendFrame.ID = REQ_READ_DLT;
         break;
     case 9:
-        sendFrame.ID = REQ_READ_NOR;
+        sendFrame.ID = REQ_READ_POV;
         break;
     case 10:
-        sendFrame.ID = REQ_FALT_OC;
+        sendFrame.ID = REQ_READ_PUV;
         break;
     case 11:
-        sendFrame.ID = REQ_FALT_OUV;
+        sendFrame.ID = REQ_READ_DLV;
         break;
     case 12:
-        sendFrame.ID = REQ_FALT_COUT;
+        sendFrame.ID = REQ_READ_NOR;
         break;
     case 13:
-        sendFrame.ID = REQ_FALT_DOUT;
+        sendFrame.ID = REQ_FALT_OC;
         break;
     case 14:
+        sendFrame.ID = REQ_FALT_OUV;
+        break;
+    case 15:
+        sendFrame.ID = REQ_FALT_COUT;
+        break;
+    case 16:
+        sendFrame.ID = REQ_FALT_DOUT;
+        break;
+    case 17:
         sendFrame.ID = REQ_FALT_HARD;
         break;
     default:
@@ -511,38 +520,53 @@ void DataProcess::getPackDUT(unsigned char *buf, int len)
 }
 
 // 电芯的高低压设置
-void DataProcess::getCellOUC(unsigned char *buf, int len)
+void DataProcess::getCellOUV(unsigned char *buf, int len)
 {
-    if(m_dataRecv.contains(REC_READ_OUC) && (8 == len))
+    if(m_dataRecv.contains(REC_READ_OUV) && (8 == len))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_OUC);
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_OUV);
 
         memcpy(buf,dat.Data,len);
     }
 }
 
-void DataProcess::getCellIBM(unsigned char *buf, int len)
+void DataProcess::getCellDLV(unsigned char *buf, int len)
 {
-    if(m_dataRecv.contains(REC_READ_IMB) && (8 == len))
+    if(m_dataRecv.contains(REC_READ_DLV) && (8 == len))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_IMB);
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_DLV);
 
         memcpy(buf,dat.Data,len);
     }
 }
 
-void DataProcess::getPackDIT(unsigned char *buf, int len)
+void DataProcess::getPackDLT(unsigned char *buf, int len)
 {
+    if(m_dataRecv.contains(REC_READ_DLT) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_DLT);
 
+        memcpy(buf,dat.Data,len);
+    }
 }
 
 void DataProcess::getPackOV(unsigned char *buf, int len)
 {
+    if(m_dataRecv.contains(REC_READ_POV) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_POV);
 
+        memcpy(buf,dat.Data,len);
+    }
 }
 void DataProcess::DataProcess::getPackUV(unsigned char *buf, int len)
 {
+    if(m_dataRecv.contains(REC_READ_PUV) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_READ_PUV);
 
+        memcpy(buf,dat.Data,len);
+    }
 }
 
 void DataProcess::getNorRec(unsigned char *buf, int len)

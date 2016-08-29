@@ -43,9 +43,9 @@
 #define REQ_READ_DOT        0x1825F4FD
 #define REQ_READ_CUT        0x1826F4FD
 #define REQ_READ_DUT        0x1827F4FD
-#define REQ_READ_OUC        0x1828F4FD
-#define REQ_READ_IMB        0x1829F4FD  // 单体一致性
-#define REQ_READ_DIT        0x182AF4FD  // 温差
+#define REQ_READ_OUV        0x1828F4FD  // 电芯的过、欠压参数
+#define REQ_READ_DLV        0x1829F4FD  // 单体一致性
+#define REQ_READ_DLT        0x182AF4FD  // 温差
 #define REQ_READ_POV        0x182BF4FD
 #define REQ_READ_PUV        0x182CF4FD
 
@@ -69,9 +69,9 @@
 #define REC_READ_DOT        0x1825FDF4
 #define REC_READ_CUT        0x1826FDF4
 #define REC_READ_DUT        0x1827FDF4
-#define REC_READ_OUC        0x1828FDF4
-#define REC_READ_IMB        0x1829FDF4  // 单体一致性
-#define REC_READ_DIT        0x182AFDF4  // 温差
+#define REC_READ_OUV        0x1828FDF4
+#define REC_READ_DLV        0x1829FDF4  // 单体一致性
+#define REC_READ_DLT        0x182AFDF4  // 温差
 #define REC_READ_POV        0x182BFDF4
 #define REC_READ_PUV        0x182CFDF4
 
@@ -100,7 +100,7 @@
 #define  CAN_GUI_CONFIG_POV_TH                 ((uint8_t)0x1A)
 #define  CAN_GUI_CONFIG_PUV_TH                 ((uint8_t)0x1B)
 #define  CAN_GUI_CONFIG_ISO_TH                 ((uint8_t)0x1C)
-
+#define  CAN_GUI_CONFIG_PDIM_TH                ((uint8_t)0x1D)
 
 
 #endif // HEADER_H

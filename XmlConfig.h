@@ -11,13 +11,14 @@ class XmlConfig : public QObject
 public:
     explicit XmlConfig(QObject *parent = 0);
     bool readFile(const QString &fileName);
-    QMap<QString,int> &getValue(){return value;}
+    QMap<QString,short> &getValue(){return value;}
+    bool readXmlok;
 signals:
     
 public slots:
 private:
     QXmlStreamReader reader;
-    QMap<QString,int> value;
+    QMap<QString,short> value;
 };
 
 #endif // XMLCONFIG_H
