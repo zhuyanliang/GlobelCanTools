@@ -29,8 +29,8 @@ SysPraModel::SysPraModel(DataProcess *datpress,QWidget *parent) :
     m_can = CanBus::getInstance();
 
     ui->pushButtonWritePra->setEnabled(false);
-    ui->textEditConfig->setFontPointSize(16);
-    ui->textEditConfig->setFontWeight(75);
+    ui->textEditConfig->setFontPointSize(10);
+    ui->textEditConfig->setFontWeight(50);
     ui->textEditConfig->setReadOnly(true);
     InitUI();
 }
@@ -318,18 +318,71 @@ void SysPraModel::on_pushButtonImportConfig_clicked()
 
         if(xmlconfig->readFile(fileName))
         {
+            ui->textEditConfig->clear();
             ui->lineEditConfigFilePath->setText(QFileInfo(fileName).canonicalFilePath());
             ui->pushButtonWritePra->setEnabled(true);
 
-            QMapIterator<QString, short> i(xmlconfig->getValue());
-            while (i.hasNext())
-            {
-                i.next();
-                QString text = i.key();
-                text += ": ";
-                text += QString::number(i.value());
-                ui->textEditConfig->append(text);
-            }
+            QMap<QString, short> temp = xmlconfig->getValue();
+            QString text = "";
+            text = QString::number(temp.find("cov1").value());
+            ui->textEditConfig->append("单体过压一级警告: " +text + " mV");
+            text = QString::number(temp.find("cov2").value());
+            ui->textEditConfig->append("单体过压二级警告: " +text + " mV");
+
+            text = QString::number(temp.find("cuv1").value());
+            ui->textEditConfig->append("单体欠压一级警告: " +text + " mV");
+            text = QString::number(temp.find("cuv2").value());
+            ui->textEditConfig->append("单体欠压二级警告: " +text + " mV");
+
+            text = QString::number(temp.find("pcot1").value());
+            ui->textEditConfig->append("电池包充电高温一级警告: " +text + " ℃");
+            text = QString::number(temp.find("pcot2").value());
+            ui->textEditConfig->append("电池包充电高温二级警告: " +text + " ℃");
+
+            text = QString::number(temp.find("pcut1").value());
+            ui->textEditConfig->append("电池包充电低温一级警告: " +text + " ℃");
+            text = QString::number(temp.find("pcut2").value());
+            ui->textEditConfig->append("电池包充电低温二级警告: " +text + " ℃");
+
+            text = QString::number(temp.find("pdot1").value());
+            ui->textEditConfig->append("电池包放电高温一级警告: " +text + " ℃");
+            text = QString::number(temp.find("pdot2").value());
+            ui->textEditConfig->append("电池包放电高温二级警告: " +text + " ℃");
+
+            text = QString::number(temp.find("pdut1").value());
+            ui->textEditConfig->append("电池包放电低温一级警告: " +text + " ℃");
+            text = QString::number(temp.find("pdut2").value());
+            ui->textEditConfig->append("电池包放电低温二级警告: " +text + " ℃");
+
+            text = QString::number(temp.find("pcoc1").value());
+            ui->textEditConfig->append("电池包充电过流一级警告: " +text + " A");
+            text = QString::number(temp.find("pcoc2").value());
+            ui->textEditConfig->append("电池包充电过流二级警告: " +text + " A");
+
+            text = QString::number(temp.find("pdoc1").value());
+            ui->textEditConfig->append("电池包放电过流一级警告: " +text + " A");
+            text = QString::number(temp.find("pdoc2").value());
+            ui->textEditConfig->append("电池包放电过流二级警告: " +text + " A");
+
+            text = QString::number(temp.find("pdlt1").value());
+            ui->textEditConfig->append("电池包温差一级警告: " +text + " ℃");
+            text = QString::number(temp.find("pdlt2").value());
+            ui->textEditConfig->append("电池包温差二级警告: " +text + " ℃");
+
+            text = QString::number(temp.find("pov1").value());
+            ui->textEditConfig->append("电池包过压一级警告: " +text + " V");
+            text = QString::number(temp.find("pov2").value());
+            ui->textEditConfig->append("电池包过压二级警告: " +text + " V");
+
+            text = QString::number(temp.find("puv1").value());
+            ui->textEditConfig->append("电池包欠压一级警告: " +text + " V");
+            text = QString::number(temp.find("puv2").value());
+            ui->textEditConfig->append("电池包欠压二级警告: " +text + " V");
+
+            text = QString::number(temp.find("dlv1").value());
+            ui->textEditConfig->append("单体一致性一级警告: " +text + " mV");
+            text = QString::number(temp.find("dlv2").value());
+            ui->textEditConfig->append("单体一致性二级警告: " +text + " mV");
         }
 
     }
@@ -346,7 +399,7 @@ void SysPraModel::on_pushButtonWritePra_clicked()
     QElapsedTimer t;
     unsigned char configNum = 0;
 
-    QProgressDialog progress("系统参数配置中...", "终止配置", 0, CONFIGNUM, this);
+    QProgressDialog progress("系统参数配置中...", NULL, 0, CONFIGNUM, this);
     progress.setWindowModality(Qt::WindowModal);
     progress.setValue(configNum++);
     progress.show();

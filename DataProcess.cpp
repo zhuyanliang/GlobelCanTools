@@ -26,7 +26,14 @@ DataProcess::DataProcess()
 
 void DataProcess::onTimeout()
 {
-    sendGetDataRequest();
+    static uint cnt = 0;
+    cnt++;
+    if(cnt>=10)
+    {
+        cnt = 0;
+        sendGetDataRequest();
+    }
+
     //接收数据
     receiveData();
 }
@@ -299,7 +306,7 @@ float DataProcess::getMinCellVoltage()
         return 0;
 }
 
-char DataProcess::getMaxCellTemp()
+short DataProcess::getMaxCellTemp()
 {
     if (m_dataRecv.contains(BRO_CELLT_INFO))
     {
@@ -308,13 +315,13 @@ char DataProcess::getMaxCellTemp()
         unsigned char data[8] = {0};
         memcpy(data,dat.Data,dat.DataLen);
 
-        return data[0];
+        return (short)((data[1]<<8)+data[0]);
     }
     else
         return 0;
 }
 
-char DataProcess::getMinCellTemp()
+short DataProcess::getMinCellTemp()
 {
     if (m_dataRecv.contains(BRO_CELLT_INFO))
     {
@@ -323,7 +330,7 @@ char DataProcess::getMinCellTemp()
         unsigned char data[8] = {0};
         memcpy(data,dat.Data,dat.DataLen);
 
-        return data[1];
+        return (short)((data[3]<<8)+data[2]);
     }
     else
         return 0;
@@ -375,30 +382,13 @@ ushort DataProcess::getCellVolt(uchar num)
     }
 }
 
-char DataProcess::getCellTemp(uchar num)
+void DataProcess::getCellTemp(short *temp,int len)
 {
-    if(num<4 && num>=0)
+    if(m_dataRecv.contains(BRO_TEMP_01))
     {
-        if(m_dataRecv.contains(BRO_TEMP_01))
-        {
-            static VCI_CAN_OBJ dat = m_dataRecv.value(BRO_TEMP_01);
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_TEMP_01);
 
-            unsigned char data[8] = {0};
-            memcpy(data,dat.Data,dat.DataLen);
-
-            return data[num];
-        }
-        else
-        {
-            return 0;
-        }
-    }
-    else
-    {
-        QMessageBox::warning(NULL,QString("Get Cell Temp"),
-                             QString("Get Cell Temp Error,Parameter num Out of Range"),
-                             QMessageBox::Ok);
-        return 0;
+        memcpy(temp,dat.Data,len);
     }
 }
 
@@ -428,7 +418,7 @@ uchar DataProcess::getMaxCellTempNum()
         unsigned char data[8] = {0};
         memcpy(data,dat.Data,dat.DataLen);
 
-        return data[3];
+        return data[4];
     }
     else
         return 0;

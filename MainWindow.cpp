@@ -266,10 +266,12 @@ void MainWindow::TimeUpdate(void)
     ui->lineEditCell19->setText(QString::number(cellsValt[18]));
     ui->lineEditCell20->setText(QString::number(cellsValt[19]));
 
-    ui->lineEditTemp01->setText(QString::number(m_dataProcess->getCellTemp(0)));
-    ui->lineEditTemp02->setText(QString::number(m_dataProcess->getCellTemp(1)));
-    ui->lineEditTemp03->setText(QString::number(m_dataProcess->getCellTemp(2)));
-    ui->lineEditTemp04->setText(QString::number(m_dataProcess->getCellTemp(3)));
+    short temp[4] = {0};
+    m_dataProcess->getCellTemp(temp,8);
+    ui->lineEditTemp01->setText(QString::number(temp[0]));
+    ui->lineEditTemp02->setText(QString::number(temp[1]));
+    ui->lineEditTemp03->setText(QString::number(temp[2]));
+    ui->lineEditTemp04->setText(QString::number(temp[3]));
 
     //系统参数刷新
     unsigned char readData[8] = {0};
