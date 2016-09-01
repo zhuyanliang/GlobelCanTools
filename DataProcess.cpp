@@ -28,12 +28,11 @@ void DataProcess::onTimeout()
 {
     static uint cnt = 0;
     cnt++;
-    if(cnt>=10)
+    if(cnt>=5)
     {
         cnt = 0;
         sendGetDataRequest();
     }
-
     //接收数据
     receiveData();
 }

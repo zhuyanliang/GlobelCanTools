@@ -173,6 +173,8 @@ void SysPraModel::onTime(void)
     short tempData = 0;
 
     //PACKPRA
+    memset(readData,0,8);
+    tempData = 0;
     m_dataProcess->getPackPra(readData,8);
     ui->labelSeriesNum->setText(QString::number(readData[0]));
     ui->labelSeriesNum->setFont(QFont("Times",18,QFont::Bold));
@@ -181,6 +183,9 @@ void SysPraModel::onTime(void)
     unsigned short capacity = ((readData[3]<<8)|readData[2])/10;
     ui->labelCapacity->setText(QString::number(capacity)+"Ah");
     ui->labelCapacity->setFont(QFont("Times",18,QFont::Bold));
+    status = readData[4];
+    if(!(status>=0 && status<6))
+       status = -1;
 
     // OUV µçÐ¾¸ßµÍÑ¹
     memset(readData,0,8);

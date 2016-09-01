@@ -22,6 +22,7 @@ public:
     ~SysPraModel();
     
     void InitUI(void);
+    char getStatus(){return status;}
 
 private slots:
     void onTime(void);
@@ -38,7 +39,7 @@ private:
     DataProcess* m_dataProcess;
     CanBus* m_can;
     XmlConfig *xmlconfig;
-
+    char status;
 };
 
 #endif // SYSPRAMODEL_H

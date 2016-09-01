@@ -30,7 +30,6 @@ class MainWindow : public QMainWindow
 
 private:
     QTimer *m_timer;
-    QTimer *m_timerSysPra;
     BatterySoc* m_batterySoc;
     VoltageUI* m_voltageui;
     AmpereMeter * ampereMeter;
@@ -40,9 +39,9 @@ private:
     CellMinMaxInfo* m_cellMinMaxInfoUi;
     DevSetDialog* m_devsetdlg;
     DataProcess* m_dataProcess;
-    SysPraModel* sysPraModel;
-
+    SysPraModel* m_sysPraModel;
     QStandardItemModel *model;
+    QLabel *statusLabel;
 
 protected:
      void closeEvent(QCloseEvent *event);

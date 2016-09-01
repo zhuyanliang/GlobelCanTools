@@ -15,6 +15,11 @@
 #include "DownLoadUi.h"
 #include "SysPraModel.h"
 
+QString statusArray[6] = {
+    "IDLE","PRECHARGE","DISCHARGE",
+    "CHARGE","HEATING","PROTECTION"
+};
+
 const char* IndictorLabelText[IndictorLightNum] = {
     "控制器通信","BMS间通信","温度模块通信",
     "仪表通信","用户界面通信"
@@ -44,14 +49,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::initUI()
 {
+    statusLabel = new QLabel(this);
+    ui->statusBar->addWidget(statusLabel);
     model = new QStandardItemModel();
 
     //CAN数据处理器
     m_dataProcess = new DataProcess();
     m_dataProcess->setTimerInterval(100); //50ms接收一次数据
-    sysPraModel = new SysPraModel(m_dataProcess,ui->tabSet);
-    sysPraModel->move(0,5);
-    sysPraModel->show();
+    m_sysPraModel = new SysPraModel(m_dataProcess,ui->tabSet);
+    m_sysPraModel->move(0,5);
+    m_sysPraModel->show();
 
     //CAN设备设置界面初始化
     m_devsetdlg = new DevSetDialog(this);
@@ -326,6 +333,12 @@ void MainWindow::TimeUpdate(void)
     m_dataProcess->getLtcRec(readData,8);
     tempData = ((readData[1]<<8)+readData[0]);
     ui->lineEditLTC_COM->setText(QString::number(tempData));
+
+    uchar index = (uchar)m_sysPraModel->getStatus();
+    if(index >= 0 && index < 6)
+        statusLabel->setText(statusArray[index]);
+    else
+        statusLabel->setText("UNKNOW");
 }
 
 void MainWindow::dataReceived(VCI_CAN_OBJ &data)
