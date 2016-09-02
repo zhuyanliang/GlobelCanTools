@@ -15,6 +15,8 @@
 #include "DownLoadUi.h"
 #include "SysPraModel.h"
 
+#define ROWNUM 10000
+
 QString statusArray[6] = {
     "IDLE","PRECHARGE","DISCHARGE",
     "CHARGE","HEATING","PROTECTION"
@@ -143,15 +145,7 @@ void MainWindow::initUI()
     }
 
     //tableView的设置
-    model->setColumnCount(7);
-    model->setHeaderData(0,Qt::Horizontal,QString::fromLocal8Bit("传输方向"));
-    model->setHeaderData(1,Qt::Horizontal,QString::fromLocal8Bit("时间标识"));
-    model->setHeaderData(2,Qt::Horizontal,QString::fromLocal8Bit("帧ID"));
-    model->setHeaderData(3,Qt::Horizontal,QString::fromLocal8Bit("帧格式"));
-    model->setHeaderData(4,Qt::Horizontal,QString::fromLocal8Bit("帧类型"));
-    model->setHeaderData(5,Qt::Horizontal,QString::fromLocal8Bit("数据长度"));
-    model->setHeaderData(6,Qt::Horizontal,QString::fromLocal8Bit("数据"));
-    ui->tableView->setModel(model);
+    initModel();
 
     //表头信息显示居中
     ui->tableView->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
@@ -201,6 +195,24 @@ void MainWindow::initUI()
     ui->lineEditDOT->setReadOnly(true);
     ui->lineEditDUT->setReadOnly(true);
     ui->lineEditLTC_COM->setReadOnly(true);
+}
+
+void MainWindow::initModel()
+{
+    if(model != NULL)
+        delete model;
+
+    model = new QStandardItemModel();
+    //tableView的设置
+    model->setColumnCount(7);
+    model->setHeaderData(0,Qt::Horizontal,QString::fromLocal8Bit("传输方向"));
+    model->setHeaderData(1,Qt::Horizontal,QString::fromLocal8Bit("时间标识"));
+    model->setHeaderData(2,Qt::Horizontal,QString::fromLocal8Bit("帧ID"));
+    model->setHeaderData(3,Qt::Horizontal,QString::fromLocal8Bit("帧格式"));
+    model->setHeaderData(4,Qt::Horizontal,QString::fromLocal8Bit("帧类型"));
+    model->setHeaderData(5,Qt::Horizontal,QString::fromLocal8Bit("数据长度"));
+    model->setHeaderData(6,Qt::Horizontal,QString::fromLocal8Bit("数据"));
+    ui->tableView->setModel(model);
 }
 
 void MainWindow::TimeUpdate(void)
@@ -344,6 +356,11 @@ void MainWindow::TimeUpdate(void)
 void MainWindow::dataReceived(VCI_CAN_OBJ &data)
 {
     int rows = model->rowCount();
+    if(rows > ROWNUM)
+    {
+       initModel();
+       rows = 0;
+    }
     //更新tableView控件的数据
     model->setItem(rows,0,new QStandardItem("接收"));
     //设置字符颜色

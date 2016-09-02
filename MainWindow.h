@@ -49,6 +49,8 @@ public:
     void initUI();
     explicit MainWindow(QWidget *parent = 0);
 
+    void initModel();
+
     ~MainWindow();
 signals:
     void   openButtonClicked();
@@ -65,8 +67,6 @@ private slots:
     void on_pushButtonOutputData_clicked();
 
     void on_pushButtonWritePrograme_clicked();
-
-    void on_pushButtonWritePra_clicked();
 
 private:
     Ui::MainWindow *ui;
