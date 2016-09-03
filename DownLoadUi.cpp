@@ -121,6 +121,7 @@ void DownLoadUi::on_chooseHexPushButton_clicked()
 
 void DownLoadUi::on_downLoadPushButton_clicked()
 {
+    char erasedata[8] = {0x01,0x23,0x45,0x67,0x89,0xab,0xcd,0xef};
     int devType = m_can->getDevType();
     int devIndex = m_can->getDevIndex();
     int canIndex = m_can->getCanIndex();
@@ -129,9 +130,14 @@ void DownLoadUi::on_downLoadPushButton_clicked()
     m_parse = new ParseHex(name,":020000040020DA",":020000040030CA",":00000001FF");
 
     if(!m_parse->StartParse()) //解析
+    {
         return;
+    }
     else
+    {
         qDebug() << "Hex文件解析成功";
+
+    }
 
     m_timer = new QTimer;
 
@@ -145,47 +151,40 @@ void DownLoadUi::on_downLoadPushButton_clicked()
     m_progress->show();
 
     //给单片机发送擦除应用程序头命令
-
-    m_canData.DataLen = 8;
+    m_canData.SendType = 0;
+    m_canData.RemoteFlag = 0;
     m_canData.ExternFlag = 1;
+    m_canData.DataLen = 0x08;
     m_canData.ID = CAN_Generate_ID(CAN_MSG_IMAGE_ERASE,BMS);
-    m_canData.Data[0] = 0x01;
-    m_canData.Data[1] = 0x23;
-    m_canData.Data[2] = 0x45;
-    m_canData.Data[3] = 0x67;
-    m_canData.Data[4] = 0x89;
-    m_canData.Data[5] = 0xAB;
-    m_canData.Data[6] = 0xCD;
-    m_canData.Data[7] = 0xEF;
+    for(int i=0;i<8;i++)
+    {
+        m_canData.Data[i] = erasedata[i];
+    }
 
     if(!m_can->CanTransmit(devType,devIndex,canIndex,&m_canData,1))
-        QMessageBox::warning(this,tr("发送下载命令"),
+        QMessageBox::warning(this,tr("发送下载命令失败"),
           tr("发送下载命令 %1.").arg(ui->chooseFilePathLineEdit->text()));
-
-
-    unsigned char test[8] = {0x3c,0x16,0xfc,0x0c,0x46,0x6a,0xcf,0x0e};
-    int crc = calculate_crc8(test,8);
-
-    qDebug() << crc;
-
+    else
+        qDebug() << "发送下载命令成功";
 }
 
 void DownLoadUi::onTimerout()
 {
     unsigned int Id = 0x00;
-    static VCI_CAN_OBJ dataTemp;
+    VCI_CAN_OBJ dataTemp;
     static int devType = m_can->getDevType();
     static int devIndex = m_can->getDevIndex();
     static int canIndex = m_can->getCanIndex();
 
     unsigned int ret = m_can->CanReceive(devType,devIndex,canIndex,&dataTemp,1,100);
     m_can->CanClearBuffer(devType,devIndex,canIndex);
-    if(ret != 0xFFFFFFFF && ret != 0)
+    if((ret != 0xFFFFFFFF) && (ret != 0))
     {
         qDebug() << "Receive Data";
         if(dataTemp.RemoteFlag == 1)
         {
             Id = dataTemp.ID;
+            qDebug() << "Removete data";
         }
 
         QCoreApplication::processEvents();
@@ -197,12 +196,15 @@ void DownLoadUi::onTimerout()
         qDebug() << "Can Receive Error: " << errinfo.ErrCode;
         return;
     }
+    qDebug() << "dataTemp.ID: " << hex << dataTemp.ID;
+    qDebug() << "Id: " << hex << Id;
 
     switch((Id>>16)&0xFF)
     {
     case CAN_MSG_IMAGE_REQUEST:  //请求App下载数据
         //发送擦除App命令
         FillFuncData(CAN_MSG_IMAGE_ERASE);
+        qDebug() << "Request data";
         break;
     case CAN_MSG_REQ_NEXT:  // 请求下一帧数据
         FillCodeData();
@@ -212,6 +214,7 @@ void DownLoadUi::onTimerout()
         qDebug() << "Again";
         break;
     default:
+        qDebug() << "default";
         break;
     }
     if(!m_can->CanTransmit(devType,devIndex,canIndex,&m_canData,1))
@@ -223,12 +226,35 @@ void DownLoadUi::onTimerout()
 
 void DownLoadUi::FillFuncData(unsigned char dat)
 {
-    m_canData.ID = 0;
-    m_canData.DataLen = 0;
-    m_canData.ExternFlag = 1;
-    m_canData.RemoteFlag = 1;
+    if(CAN_MSG_OVER_LOAD == dat)
+    {
+        unsigned short nums = m_parse->GetByteNums();
+        unsigned short crcTotal = m_parse->GetCrc();
+        unsigned char crc = 0;
+        m_canData.ID = 0;
+        m_canData.DataLen = 0x8;
+        m_canData.ExternFlag = 1;
+        m_canData.RemoteFlag = 0;
+        m_canData.SendType = 0;
+        // 代码中字符个数
+        m_canData.Data[0] = nums&0xff;
+        m_canData.Data[1] = (nums>>8)&0xff;
+        // 所有代码的CRC
+        m_canData.Data[2] = crcTotal&0xff;
+        m_canData.Data[3] = (crcTotal>>8)&0xff;
 
-    m_canData.ID = CAN_Generate_ID(dat,'C');
+        crc = calculate_crc8((unsigned char*)&m_canData.Data[0],m_canData.DataLen);
+        m_canData.ID = CAN_Generate_ID(CAN_MSG_OVER_LOAD,crc);
+    }
+    else
+    {
+        m_canData.SendType = 0;
+        m_canData.ID = 0;
+        m_canData.DataLen = 0;
+        m_canData.ExternFlag = 1;
+        m_canData.RemoteFlag = 1;
+        m_canData.ID = CAN_Generate_ID(dat,'C');
+    }
 }
 
 void DownLoadUi::FillCodeData()

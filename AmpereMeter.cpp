@@ -46,10 +46,10 @@ void AmpereMeter::paintEvent(QPaintEvent *)
     drawOuterCircle(&painter);
     drawInnerCircle(&painter);
     drawColorPies(&painter);
-    drawIndicator(&painter);
     drawCoverLines(&painter);
     drawCoverCircle(&painter);
     drawMarkAndText(&painter);
+    drawIndicator(&painter);
     drawTextRect(&painter);
     painter.end();
 }
@@ -121,7 +121,6 @@ void AmpereMeter::drawCoverLines(QPainter* painter)
     painter->setPen(QColor(100,100,100));
     for(int i=0;i<=5;i++)
     {
-
         painter->save();
         painter->rotate(startAngle);
         QPointF topPot(0,m_colorPieRadius);
@@ -206,7 +205,7 @@ void AmpereMeter::drawMarkAndText(QPainter* painter)
 void AmpereMeter::drawIndicator(QPainter* painter)
 {
     painter->save();
-    painter->setPen(QPen(Qt::blue,2));
+    painter->setPen(QPen(Qt::blue,4));
     painter->translate(m_center);
 
     qreal increment=(qreal)180/250;

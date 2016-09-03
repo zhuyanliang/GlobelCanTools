@@ -20,6 +20,7 @@ public:
     bool StartParse(void);
     unsigned long GetByteNums(){return m_byteNums;} //必须放在StartParse之后调用
     unsigned char GetBinData(unsigned int i){return m_binData[i];}
+    unsigned short GetCrc(){return m_Crc;}
 
 private:
     QFile           *m_file; //Hex文件
@@ -29,6 +30,7 @@ private:
     QString         m_configBits;
     QString         m_endOfHex;
     unsigned long   m_byteNums;   //hex文件转换后的字节数
+    unsigned short  m_Crc;
     
 signals:
     

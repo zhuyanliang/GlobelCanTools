@@ -108,7 +108,8 @@ void BatterySoc::UpdateGraph()
 {
     if(m_bReverse)
     {
-        m_value -= 0.1;
+        if((uint)m_value != (uint)m_currentValue)
+            m_value -= 0.1;
 
         if(m_value <= m_currentValue)
         {
@@ -117,7 +118,8 @@ void BatterySoc::UpdateGraph()
     }
     else
     {
-        m_value += 0.1;
+        if((uint)m_value != (uint)m_currentValue)
+            m_value += 0.1;
         if(m_value >= m_currentValue)
         {
             updateTimer->stop();
@@ -141,10 +143,7 @@ void BatterySoc::setValue(qreal value)
     {
         m_bReverse = true;
     }
-    else
-    {
-        return ;
-    }
+
     updateTimer->start();
     m_currentValue = value;
 
