@@ -27,8 +27,8 @@ public:
     explicit DataProcess();
     int receiveData(void);
     int dataStore(QTableView *tableView, QStandardItemModel *model);
-    short getCurrent();
-    uint16_t getTotalVoltage();
+    ushort getCurrent();
+    float getTotalVoltage();
     uchar getSoc();
 
     float getMaxCellVoltage();

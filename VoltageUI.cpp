@@ -221,8 +221,8 @@ void VoltageUI::drawTextRect(QPainter* painter)
     qreal rectWidth = m_colorPieRadius-m_coverCircleRadius;//(m_colorPieRadius-m_coverCircleRadius)/2;
 
     painter->setOpacity(0.7);
-    QPointF topLeftPot(m_center.x()-rectWidth,m_center.y()-rectWidth);
-    QPointF bottomRightPot(m_center.x()+rectWidth,m_center.y()+rectWidth);
+    QPointF topLeftPot(m_center.x()-rectWidth*1.5,m_center.y()-rectWidth*0.8);
+    QPointF bottomRightPot(m_center.x()+rectWidth*1.5,m_center.y()+rectWidth*0.8);
     QRectF textRect(topLeftPot,bottomRightPot);
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::color0);
@@ -230,11 +230,12 @@ void VoltageUI::drawTextRect(QPainter* painter)
 
     painter->setOpacity(1.0);
     painter->setPen(Qt::black);
-    qreal fontSize=rectWidth*0.75;
+    qreal fontSize=rectWidth*0.6;
     QFont font;
     font.setPointSize(fontSize);
     painter->setFont(font);
-    painter->drawText(textRect,Qt::AlignVCenter|Qt::AlignHCenter,tr("%1").arg(m_value).append("V"));
+    painter->drawText(textRect,Qt::AlignVCenter|Qt::AlignHCenter,
+                      tr("%1").arg(QString::number(m_value,'f',1).append("V")));
     painter->restore();
 }
 
@@ -242,18 +243,17 @@ void VoltageUI::setValue(qreal value)
 {
     if(value>m_value)
     {
-        m_bReverse=false;
-        m_value=value;
+        m_bReverse = false;
     }
     else if(value<m_value)
     {
-        m_bReverse=true;
-        m_value=value;
+        m_bReverse = true;
     }
     else
     {
         return ;
     }
+    m_value = value;
     updateTimer->start();
 }
 
@@ -263,7 +263,7 @@ void VoltageUI::UpdateGraph()
     {
         if(m_currentValue-m_value > 5)
             m_currentValue -= 5;
-        m_currentValue-=0.5;
+        m_currentValue-=0.1;
 
         if(m_currentValue<=m_value)
         {
@@ -274,7 +274,7 @@ void VoltageUI::UpdateGraph()
     {
         if(m_value - m_currentValue > 5)
             m_currentValue += 5;
-        m_currentValue += 0.5;
+        m_currentValue += 0.1;
 
         if(m_currentValue>=m_value)
         {

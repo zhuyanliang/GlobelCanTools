@@ -17,9 +17,9 @@
 
 #define ROWNUM 10000
 
-QString statusArray[6] = {
+QString statusArray[7] = {
     "IDLE","PRECHARGE","DISCHARGE",
-    "CHARGE","HEATING","PROTECTION"
+    "CHARGE","HEATING","COOLING","PROTECTION"
 };
 
 const char* IndictorLabelText[IndictorLightNum] = {
@@ -44,8 +44,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //电池信息用的定时器
     m_timer = new QTimer(this);
-    m_timer->setInterval(1000);
-    connect(m_timer,SIGNAL(timeout()),this,SLOT(TimeUpdate()));
+    m_timer->setInterval(500);
+    connect(m_timer,SIGNAL(timeout()),this,SLOT(timeUpdate()));
     m_timer->start();
 }
 
@@ -215,7 +215,7 @@ void MainWindow::initModel()
     ui->tableView->setModel(model);
 }
 
-void MainWindow::TimeUpdate(void)
+void MainWindow::timeUpdate(void)
 {
     float maxV  = m_dataProcess->getMaxCellVoltage();
     float minV = m_dataProcess->getMinCellVoltage();
@@ -229,16 +229,17 @@ void MainWindow::TimeUpdate(void)
     uchar minTP = m_dataProcess->getMinCellTempNum();
     float tDlt = maxT - minT;
 
-    uint16_t totalVoltage = m_dataProcess->getTotalVoltage();
-    uint16_t current;
-    if(m_dataProcess->getCurrent() &0x80)
+    float totalVoltage = m_dataProcess->getTotalVoltage();
+    float current;
+    ushort currentTemp = m_dataProcess->getCurrent();
+    if( currentTemp&0x8000)
     {
-        ushort temp = 0xFFFF - m_dataProcess->getCurrent();
+        short temp = 0xFFFF - currentTemp;
         current = temp * (-0.1);
     }
     else
     {
-        current = m_dataProcess->getCurrent() * 0.1;
+        current = currentTemp * 0.1;
     }
 
     uchar soc = m_dataProcess->getSoc();
@@ -347,7 +348,7 @@ void MainWindow::TimeUpdate(void)
     ui->lineEditLTC_COM->setText(QString::number(tempData));
 
     uchar index = (uchar)m_sysPraModel->getStatus();
-    if(index >= 0 && index < 6)
+    if(index >= 0 && index < 7)
         statusLabel->setText(statusArray[index]);
     else
         statusLabel->setText("UNKNOW");
@@ -378,6 +379,8 @@ void MainWindow::dataReceived(VCI_CAN_OBJ &data)
         model->setItem(rows,3,new QStandardItem(QString::fromLocal8Bit("扩展帧")));
     else
         model->setItem(rows,3,new QStandardItem(QString::fromLocal8Bit("标准帧")));
+    if(data.RemoteFlag)
+        data.DataLen = 0;
     model->item(rows,3)->setTextAlignment(Qt::AlignCenter);
     model->setItem(rows,5,new QStandardItem(QString::number(data.DataLen,10)));
     model->item(rows,5)->setTextAlignment(Qt::AlignCenter);

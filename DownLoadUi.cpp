@@ -136,7 +136,6 @@ void DownLoadUi::on_downLoadPushButton_clicked()
     else
     {
         qDebug() << "Hex文件解析成功";
-
     }
 
     m_timer = new QTimer;
@@ -162,8 +161,14 @@ void DownLoadUi::on_downLoadPushButton_clicked()
     }
 
     if(!m_can->CanTransmit(devType,devIndex,canIndex,&m_canData,1))
+    {
         QMessageBox::warning(this,tr("发送下载命令失败"),
           tr("发送下载命令 %1.").arg(ui->chooseFilePathLineEdit->text()));
+
+        m_progress->close();
+        delete m_progress;
+        close();
+    }
     else
         qDebug() << "发送下载命令成功";
 }

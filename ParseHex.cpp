@@ -107,6 +107,7 @@ ParseHex::~ParseHex()
     if(m_file->isOpen())
         m_file->close();
     m_binData.clear();
+    delete m_file;
 }
 
 bool ParseHex::StartParse(void)
@@ -147,8 +148,6 @@ bool ParseHex::StartParse(void)
             }
         }
     }
-
-
 
     return true;
 }

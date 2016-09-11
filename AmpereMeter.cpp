@@ -222,8 +222,8 @@ void AmpereMeter::drawTextRect(QPainter* painter)
     qreal rectWidth = m_colorPieRadius-m_coverCircleRadius;//(m_colorPieRadius-m_coverCircleRadius)/2;
 
     painter->setOpacity(0.7);
-    QPointF topLeftPot(m_center.x()-1.5*rectWidth,m_center.y()-rectWidth);
-    QPointF bottomRightPot(m_center.x()+1.5*rectWidth,m_center.y()+rectWidth);
+    QPointF topLeftPot(m_center.x()-1.5*rectWidth,m_center.y()-rectWidth*0.8);
+    QPointF bottomRightPot(m_center.x()+1.5*rectWidth,m_center.y()+rectWidth*0.8);
     QRectF textRect(topLeftPot,bottomRightPot);
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::color0);
@@ -231,11 +231,11 @@ void AmpereMeter::drawTextRect(QPainter* painter)
 
     painter->setOpacity(1.0);
     painter->setPen(Qt::black);
-    qreal fontSize=rectWidth*0.75;
+    qreal fontSize=rectWidth*0.6;
     QFont font;
     font.setPointSize(fontSize);
     painter->setFont(font);
-    painter->drawText(textRect,Qt::AlignVCenter|Qt::AlignHCenter,tr("%1").arg(m_value).append("A"));
+    painter->drawText(textRect,Qt::AlignVCenter|Qt::AlignHCenter,tr("%1").arg(QString::number(m_value,'f',1)).append("A"));
     painter->restore();
 }
 

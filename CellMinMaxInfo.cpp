@@ -10,31 +10,31 @@ CellMinMaxInfo::CellMinMaxInfo(QWidget *parent) :
 
     gridLayout = new QGridLayout(groupBox);
 
-    labelMaxCellVol = new QLabel("电芯最大电压:",this);
-    labelMaxVPos = new QLabel("电芯最大电压位置:",this);
-    labelMinCellVol = new QLabel("电芯最小电压:",this);
-    labelMinVPos = new QLabel("电芯最小电压位置:",this);
+    labelMaxCellVol = new QLabel("电芯最大电压:");
+    labelMaxVPos = new QLabel("最大电压位置:");
+    labelMinCellVol = new QLabel("电芯最小电压:");
+    labelMinVPos = new QLabel("最小电压位置:");
     labelDltV = new QLabel("电压差:",this);
 
-    labelMaxCellTemp = new QLabel("最大温度:",this);
-    labelMaxTPos = new QLabel("最大温度位置:",this);
-    labelMinCellTemp = new QLabel("最小温度:",this);
-    labelMinTPos = new QLabel("最小温度位置:",this);
-    labelDltT = new QLabel("温度差:",this);
-    labelCycTimes = new QLabel("循环次数:",this);
+    labelMaxCellTemp = new QLabel("最大温度:");
+    labelMaxTPos = new QLabel("最大温度位置:");
+    labelMinCellTemp = new QLabel("最小温度:");
+    labelMinTPos = new QLabel("最小温度位置:");
+    labelDltT = new QLabel("温度差:");
+    labelCycTimes = new QLabel("循环次数:");
     labelCycTimes->setAlignment(Qt::AlignCenter);
 
-    lineEditMaxCellVol = new QLineEdit(this);
-    lineEditMaxVPos = new QLineEdit(this);
-    lineEditMinCellVol = new QLineEdit(this);
-    lineEditMinVPos = new QLineEdit(this);
-    lineEditDltV = new QLineEdit(this);
-    lineEditMaxCellTemp = new QLineEdit(this);
-    lineEditMaxTPos = new QLineEdit(this);
-    lineEditMinCellTemp = new QLineEdit(this);
-    lineEditMinTPos = new QLineEdit(this);
-    lineEditDltT = new QLineEdit(this);
-    lineEditCycTimes = new QLineEdit(this);
+    lineEditMaxCellVol = new QLineEdit();
+    lineEditMaxVPos = new QLineEdit();
+    lineEditMinCellVol = new QLineEdit();
+    lineEditMinVPos = new QLineEdit();
+    lineEditDltV = new QLineEdit();
+    lineEditMaxCellTemp = new QLineEdit();
+    lineEditMaxTPos = new QLineEdit();
+    lineEditMinCellTemp = new QLineEdit();
+    lineEditMinTPos = new QLineEdit();
+    lineEditDltT = new QLineEdit();
+    lineEditCycTimes = new QLineEdit();
 
     gridLayout->addWidget(labelMaxCellVol,0,0,1,1);
     gridLayout->addWidget(labelMaxVPos,0,1,1,1);
@@ -73,6 +73,7 @@ CellMinMaxInfo::CellMinMaxInfo(QWidget *parent) :
     lineEditCycTimes->setReadOnly(true);
 
     gridLayout->setSpacing(5);
-    groupBox->setLayout(gridLayout);
-    resize(600,200);
+    //groupBox->setLayout(gridLayout);
+    groupBox->resize(620,150);
+    resize(630,200);
 }

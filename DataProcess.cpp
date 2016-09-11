@@ -149,12 +149,15 @@ int DataProcess::dataStore(QTableView *tableView,QStandardItemModel *model)
         return 0;
 }
 
-short DataProcess::getCurrent()
+ushort DataProcess::getCurrent()
 {
     if (m_dataRecv.contains(0x180250F4))
     {
         VCI_CAN_OBJ dat = m_dataRecv.value(0x180250F4);
-        ushort ret = (ushort)((dat.Data[3]<<8) | dat.Data[2]);
+        ushort ret = 0;
+        ret = dat.Data[3];
+        ret <<= 8;
+        ret += (uchar)dat.Data[2];
 
         return ret;
     }
@@ -162,7 +165,7 @@ short DataProcess::getCurrent()
         return 0;
 }
 
-uint16_t DataProcess::getTotalVoltage()
+float DataProcess::getTotalVoltage()
 {
     if (m_dataRecv.contains(BRO_BATT_INFO))
     {
@@ -171,9 +174,8 @@ uint16_t DataProcess::getTotalVoltage()
         ret = (uint8_t)dat.Data[1];
         ret = (ret << 8);
         ret |= (uint8_t)dat.Data[0];
-        ret /= 10;
 
-        return ret;
+        return ret/10.0;
     }
     else
         return 0;

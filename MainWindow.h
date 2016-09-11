@@ -55,7 +55,7 @@ public:
 signals:
     void   openButtonClicked();
 private slots:
-    void TimeUpdate();
+    void timeUpdate();
     void on_actionSet_triggered();
 
     void on_pushButtonOpen_clicked();
