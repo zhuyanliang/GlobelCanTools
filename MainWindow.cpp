@@ -1,6 +1,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QThread>
+#include <QTime>
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
 #include "VoltageUI.h"
@@ -195,6 +196,28 @@ void MainWindow::initUI()
     ui->lineEditDOT->setReadOnly(true);
     ui->lineEditDUT->setReadOnly(true);
     ui->lineEditLTC_COM->setReadOnly(true);
+
+    // 设置导出数据的model
+    modelTestData = new QStandardItemModel();
+    modelTestData->setColumnCount(15);
+    modelTestData->setHeaderData(0,Qt::Horizontal,QString::fromLocal8Bit("时间"));
+    modelTestData->setHeaderData(1,Qt::Horizontal,QString::fromLocal8Bit("电池包状态"));
+    modelTestData->setHeaderData(2,Qt::Horizontal,QString::fromLocal8Bit("总电压"));
+    modelTestData->setHeaderData(3,Qt::Horizontal,QString::fromLocal8Bit("总电流"));
+    modelTestData->setHeaderData(4,Qt::Horizontal,QString::fromLocal8Bit("SOC"));
+    modelTestData->setHeaderData(5,Qt::Horizontal,QString::fromLocal8Bit("最大电压"));
+    modelTestData->setHeaderData(6,Qt::Horizontal,QString::fromLocal8Bit("编号VMax"));
+    modelTestData->setHeaderData(7,Qt::Horizontal,QString::fromLocal8Bit("最小电压"));
+    modelTestData->setHeaderData(8,Qt::Horizontal,QString::fromLocal8Bit("编号VMin"));
+    modelTestData->setHeaderData(9,Qt::Horizontal,QString::fromLocal8Bit("最大温度"));
+    modelTestData->setHeaderData(10,Qt::Horizontal,QString::fromLocal8Bit("编号TMax"));
+    modelTestData->setHeaderData(11,Qt::Horizontal,QString::fromLocal8Bit("最小温度"));
+    modelTestData->setHeaderData(12,Qt::Horizontal,QString::fromLocal8Bit("编号TMin"));
+    modelTestData->setHeaderData(13,Qt::Horizontal,QString::fromLocal8Bit("平均温度"));
+    modelTestData->setHeaderData(14,Qt::Horizontal,QString::fromLocal8Bit("电压差"));
+
+    //默认不记录数据
+    ui->radioButtonNo->setChecked(true);
 }
 
 void MainWindow::initModel()
@@ -217,6 +240,11 @@ void MainWindow::initModel()
 
 void MainWindow::timeUpdate(void)
 {
+    if(!m_devsetdlg->getCan()->getIsOpen() ||
+            !m_devsetdlg->getCan()->getIsStart())
+    {
+        return;
+    }
     float maxV  = m_dataProcess->getMaxCellVoltage();
     float minV = m_dataProcess->getMinCellVoltage();
     uchar maxVP = m_dataProcess->getMaxCellVolNum();
@@ -230,7 +258,7 @@ void MainWindow::timeUpdate(void)
     float tDlt = maxT - minT;
 
     float totalVoltage = m_dataProcess->getTotalVoltage();
-    float current;
+    float current = 0.0;
     ushort currentTemp = m_dataProcess->getCurrent();
     if( currentTemp&0x8000)
     {
@@ -301,50 +329,70 @@ void MainWindow::timeUpdate(void)
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getNorRec(readData,8);
-    tempData = ((readData[1]<<8)+readData[0]);
+    tempData = readData[1];
+    tempData <<= 8;
+    tempData += readData[0];
     m_cellMinMaxInfoUi->lineEditCycTimes->setText(QString::number(tempData));
 
     // FALT_OC
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getOCRec(readData,8);
-    tempData = ((readData[1]<<8)+readData[0]);
+    tempData = readData[1];
+    tempData <<= 8;
+    tempData += readData[0];
     ui->lineEditCOC->setText(QString::number(tempData));
-    tempData = ((readData[5]<<8)+readData[4]);
+    tempData = readData[5];
+    tempData <<= 8;
+    tempData += readData[4];
     ui->lineEditDOC->setText(QString::number(tempData));
 
     //OUV
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getOUVRec(readData,8);
-    tempData = ((readData[1]<<8)+readData[0]);
+    tempData = readData[1];
+    tempData <<= 8;
+    tempData += readData[0];
     ui->lineEditCOV->setText(QString::number(tempData));
-    tempData = ((readData[5]<<8)+readData[4]);
+    tempData = readData[5];
+    tempData <<= 8;
+    tempData += readData[4];
     ui->lineEditCUV->setText(QString::number(tempData));
 
     // COUT
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getCOUTRec(readData,8);
-    tempData = ((readData[1]<<8)+readData[0]);
+    tempData = readData[1];
+    tempData <<= 8;
+    tempData += readData[0];
     ui->lineEditCOT->setText(QString::number(tempData));
-    tempData = ((readData[5]<<8)+readData[4]);
+    tempData = readData[5];
+    tempData <<= 8;
+    tempData += readData[4];
     ui->lineEditCUT->setText(QString::number(tempData));
 
     // DOUT
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getDOUTRec(readData,8);
-    tempData = ((readData[1]<<8)+readData[0]);
+    tempData = readData[1];
+    tempData <<= 8;
+    tempData += readData[0];
     ui->lineEditDOT->setText(QString::number(tempData));
-    tempData = ((readData[5]<<8)+readData[4]);
+    tempData = readData[5];
+    tempData <<= 8;
+    tempData += readData[4];
     ui->lineEditDUT->setText(QString::number(tempData));
 
     // HARD  LTC6803
     memset(readData,0,8);
     tempData = 0;
     m_dataProcess->getLtcRec(readData,8);
-    tempData = ((readData[1]<<8)+readData[0]);
+    tempData = readData[1];
+    tempData <<= 8;
+    tempData += readData[0];
     ui->lineEditLTC_COM->setText(QString::number(tempData));
 
     uchar index = (uchar)m_sysPraModel->getStatus();
@@ -352,6 +400,35 @@ void MainWindow::timeUpdate(void)
         statusLabel->setText(statusArray[index]);
     else
         statusLabel->setText("UNKNOW");
+
+    // 提取要到处的测试数据
+    if(ui->radioButtonNo->isChecked())
+        return;
+    // 提取数据
+    int rows = modelTestData->rowCount();
+    QTime currenttime = QTime::currentTime();
+
+    modelTestData->setItem(rows,0,new QStandardItem(currenttime.toString()));
+    modelTestData->setItem(rows,1,new QStandardItem(statusLabel->text()));
+    modelTestData->setItem(rows,2,new QStandardItem(QString::number(totalVoltage)));
+    modelTestData->setItem(rows,3,new QStandardItem(QString::number(current)));
+    modelTestData->setItem(rows,4,new QStandardItem(QString::number(soc)));
+    modelTestData->setItem(rows,5,new QStandardItem(QString::number(maxV)));
+    modelTestData->setItem(rows,6,new QStandardItem(QString::number(maxVP)));
+    modelTestData->setItem(rows,7,new QStandardItem(QString::number(minV)));
+    modelTestData->setItem(rows,8,new QStandardItem(QString::number(minVP)));
+    modelTestData->setItem(rows,9,new QStandardItem(QString::number(maxT)));
+    modelTestData->setItem(rows,10,new QStandardItem(QString::number(maxTP)));
+    modelTestData->setItem(rows,11,new QStandardItem(QString::number(minT)));
+    modelTestData->setItem(rows,12,new QStandardItem(QString::number(minTP)));
+    uint tempSum = 0;
+    for(int i=0;i<4;i++)
+    {
+        tempSum += temp[i];
+    }
+    modelTestData->setItem(rows,13,new QStandardItem(QString::number(tempSum/4)));
+    modelTestData->setItem(rows,14,new QStandardItem(QString::number(vDlt)));
+
 }
 
 void MainWindow::dataReceived(VCI_CAN_OBJ &data)
@@ -514,7 +591,8 @@ void MainWindow::on_actionBoardInfo_triggered()
 
 void MainWindow::on_pushButtonOutputData_clicked()
 {
-    uint cnt = m_dataProcess->dataStore(ui->tableView,model);
+    uint cnt = m_dataProcess->dataStore(NULL,modelTestData);
+    //uint cnt = m_dataProcess->dataStore(NULL,model);
     if(cnt)
         QMessageBox::information(this,QObject::tr("保存结果"),QString("%1 行数据保存成功").arg(cnt),QMessageBox::Ok);
     else

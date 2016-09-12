@@ -16,6 +16,7 @@ TableView2Excel::TableView2Excel(QObject *parent) :
 
 bool TableView2Excel::ExportToExcel(QTableView *tableView,QStandardItemModel *model)
 {
+    Q_UNUSED(tableView);
     int tableR = model->rowCount();
     int tableC = model->columnCount();
 
@@ -26,20 +27,23 @@ bool TableView2Excel::ExportToExcel(QTableView *tableView,QStandardItemModel *mo
     probar.setMaximum(tableR);
     probar.show();
 
-    if ( NULL == tableView )
-    {
-        return false;
-    }
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC","excelexport");
     if( !db.isValid())
     {
         qDebug() << "DB is inValid()";
         return false;   //! type error
     }
+//    QString t = QString::number(QDateTime::currentDateTime().toTime_t());
+    QString t = QTime::currentTime().toString();
 
+    t.remove(QChar(':'));
+    t.trimmed();
+//    QString dsn = "DRIVER={Microsoft Excel Driver (*.xls)};"
+//                "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\"test.xls\";DBQ=test.xls";
     QString dsn = "DRIVER={Microsoft Excel Driver (*.xls)};"
-                "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\"test.xls\";DBQ=test.xls";
+                  "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\""+ t + ".xls\";DBQ="
+                   + t +".xls";
+    qDebug() << dsn;
     db.setDatabaseName(dsn);
     if(!db.open())
     {
@@ -56,6 +60,7 @@ bool TableView2Excel::ExportToExcel(QTableView *tableView,QStandardItemModel *mo
 
     //create the table (sheet in Excel file)
     sSql = QString("CREATE TABLE [%1] (").arg(sheetName);
+
     for(int i=0;i<model->columnCount()-1;i++)
     {
         sSql += "[" +model->horizontalHeaderItem(i)->text() + "] char(64),";

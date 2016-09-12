@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <systemconfig>
-	<cov cov1="4180" cov2="4200"/>  	<!--mV 单体过压-->
+	<cov cov1="4150" cov2="4180"/>  	<!--mV 单体过压-->
 	<cuv cuv1="3000" cuv2="2850"/>  	<!--mV 单体欠压-->
 	<pcot pcot1="40" pcot2="45"/>		<!-- 电池包充电高温-->
 	<pcut pcut1="5" pcut2="0"/>			<!-- 电池包充电低温-->

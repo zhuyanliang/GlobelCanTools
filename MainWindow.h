@@ -42,6 +42,7 @@ private:
     SysPraModel* m_sysPraModel;
     QStandardItemModel *model;
     QLabel *statusLabel;
+    QStandardItemModel *modelTestData;
 
 protected:
      void closeEvent(QCloseEvent *event);
