@@ -7,15 +7,16 @@
 
 int main(int argc, char *argv[])
 {
-    QSettings settings;
+    //QSettings settings;
 
     QCoreApplication::setOrganizationName("GlobeCanTools");
     QCoreApplication::setOrganizationDomain("Globe.com");
     QCoreApplication::setApplicationName("CanGui");
 
-    QTextCodec *codec = QTextCodec::codecForName("GBK");
-    QTextCodec::setCodecForTr(codec);
+    QApplication::addLibraryPath("./plugins");
+    QTextCodec *codec = QTextCodec::codecForName("GB2312");
     QTextCodec::setCodecForLocale(codec);
+    QTextCodec::setCodecForTr(codec);
     QTextCodec::setCodecForCStrings(codec);
 
     qRegisterMetaType<QItemSelection>("QItemSelection");

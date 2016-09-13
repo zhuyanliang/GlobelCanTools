@@ -513,7 +513,10 @@ void MainWindow::on_pushButtonOpen_clicked()
             m_devsetdlg->getCan()->setStartorStop(false);//关闭CAN
             m_dataProcess->timerStop();
         }
-        ui->pushButtonOutputData->setEnabled(true);
+        if(modelTestData->rowCount() > 0)
+            ui->pushButtonOutputData->setEnabled(true);
+        else
+            ui->pushButtonOutputData->setEnabled(false);
         ui->pushButtonWritePrograme->setEnabled(false);
 
     }
@@ -536,7 +539,6 @@ void MainWindow::on_pushButtonOpen_clicked()
             ui->pushButtonOpen->setIcon(icon);
             //启动CAN发送接收
             m_dataProcess->timerStart();
-
             ui->pushButtonOutputData->setEnabled(false);
             ui->pushButtonWritePrograme->setEnabled(true);
         }
