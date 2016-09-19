@@ -359,14 +359,14 @@ void SysPraModel::on_pushButtonImportConfig_clicked()
             text = QString::number(temp.find("pdut2").value());
             ui->textEditConfig->append("电池包放电低温二级警告: " +text + " ℃");
 
-            text = QString::number(temp.find("pcoc1").value());
+            text = QString::number(temp.find("pcoc1").value()/10);
             ui->textEditConfig->append("电池包充电过流一级警告: " +text + " A");
-            text = QString::number(temp.find("pcoc2").value());
+            text = QString::number(temp.find("pcoc2").value()/10);
             ui->textEditConfig->append("电池包充电过流二级警告: " +text + " A");
 
-            text = QString::number(temp.find("pdoc1").value());
+            text = QString::number(temp.find("pdoc1").value()/10);
             ui->textEditConfig->append("电池包放电过流一级警告: " +text + " A");
-            text = QString::number(temp.find("pdoc2").value());
+            text = QString::number(temp.find("pdoc2").value()/10);
             ui->textEditConfig->append("电池包放电过流二级警告: " +text + " A");
 
             text = QString::number(temp.find("pdlt1").value());
