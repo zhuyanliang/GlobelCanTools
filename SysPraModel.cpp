@@ -184,7 +184,7 @@ void SysPraModel::onTime(void)
     ui->labelCapacity->setText(QString::number(capacity)+"Ah");
     ui->labelCapacity->setFont(QFont("Times",18,QFont::Bold));
     status = readData[4];
-    if(!(status>=0 && status<7))
+    if(!(status>=0 && status<5))
        status = -1;
 
     // OUV µçĞ¾¸ßµÍÑ¹

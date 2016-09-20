@@ -18,9 +18,9 @@
 
 #define ROWNUM 10000
 
-QString statusArray[7] = {
+QString statusArray[5] = {
     "IDLE","PRECHARGE","DISCHARGE",
-    "CHARGE","HEATING","COOLING","PROTECTION"
+    "CHARGE","PROTECTION"
 };
 
 const char* IndictorLabelText[IndictorLightNum] = {
@@ -327,12 +327,12 @@ void MainWindow::timeUpdate(void)
 
     // NOR_REC
     memset(readData,0,8);
-    tempData = 0;
+    unsigned short times = 0;
     m_dataProcess->getNorRec(readData,8);
-    tempData = readData[1];
-    tempData <<= 8;
-    tempData += readData[0];
-    m_cellMinMaxInfoUi->lineEditCycTimes->setText(QString::number(tempData));
+    times = readData[1];
+    times <<= 8;
+    times |= readData[0];
+    m_cellMinMaxInfoUi->lineEditCycTimes->setText(QString::number(times));
 
     // FALT_OC
     memset(readData,0,8);
@@ -395,13 +395,14 @@ void MainWindow::timeUpdate(void)
     tempData += readData[0];
     ui->lineEditLTC_COM->setText(QString::number(tempData));
 
+    // 电池状态
     uchar index = (uchar)m_sysPraModel->getStatus();
-    if(index >= 0 && index < 7)
+    if(index >= 0 && index < 5)
         statusLabel->setText(statusArray[index]);
     else
         statusLabel->setText("UNKNOW");
 
-    // 提取要到处的测试数据
+    // 提取要导出的测试数据
     if(ui->radioButtonNo->isChecked())
         return;
     // 提取数据
@@ -594,7 +595,6 @@ void MainWindow::on_actionBoardInfo_triggered()
 void MainWindow::on_pushButtonOutputData_clicked()
 {
     uint cnt = m_dataProcess->dataStore(NULL,modelTestData);
-    //uint cnt = m_dataProcess->dataStore(NULL,model);
     if(cnt)
         QMessageBox::information(this,QObject::tr("保存结果"),QString("%1 行数据保存成功").arg(cnt),QMessageBox::Ok);
     else
