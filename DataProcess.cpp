@@ -440,6 +440,16 @@ ushort DataProcess::getChgCircNum()//充放电循环次数
         return 0;
 }
 
+void DataProcess::getBattWarnError(unsigned char *buf, int len)
+{
+    if(m_dataRecv.contains(BRO_SYS_WARN) && (8 == len))
+    {
+        VCI_CAN_OBJ dat = m_dataRecv.value(BRO_SYS_WARN);
+
+        memcpy(buf,dat.Data,len);
+    }
+}
+
 void DataProcess::getPackPra(unsigned char *buf,int len)
 {
     if(m_dataRecv.contains(REC_PACK_PRA) && (8 == len))

@@ -43,6 +43,7 @@ public:
     void getCellTemp(short *temp, int len);
     ushort getChgCircNum();         //充放电循环次数
     void getCellsVoltage(float cellVol[], int len);//获取所有电芯实时电压
+    void getBattWarnError(unsigned char *buf, int len);
     void getPackPra(unsigned char *buf, int len);
     void getPackCOC(unsigned char *buf, int len);
     void getPackDOC(unsigned char *buf, int len);

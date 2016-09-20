@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QRadioButton>
 #include "DataProcess.h"
 #include <QCloseEvent>
 
@@ -23,6 +24,32 @@ class SysPraModel;
 namespace Ui {
 class MainWindow;
 }
+
+//系统的报警信息类型
+typedef union
+{
+    uint32_t all;
+
+    struct
+    {
+        unsigned COV :2;        // 单体电池过压
+        unsigned CUV :2;        // 单体电池欠压
+        unsigned COT :2;		// 单体充电高温
+        unsigned CUT :2;		// 单体充电低温
+        unsigned DOT :2;		// 单体放电高温
+        unsigned DUT :2;		// 单体放电低温
+        unsigned COC :2;		// 充电过流
+        unsigned DOC :2;		// 放电过流
+        unsigned CIB :2;     	// 单体电池一致性
+        unsigned PCBOT :2;    	// PCB板高温
+        unsigned PCBUT :2;    	// PCB板低温
+        unsigned POV :2;		// 整包总压高
+        unsigned PUV :2;		// 整包总压低
+        unsigned TIB :2;		// 电池温差大
+        unsigned ISO :2;		// 绝缘警告
+        unsigned     :2;
+    };
+}SysWarningDef;
 
 class MainWindow : public QMainWindow
 {
@@ -51,6 +78,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
 
     void initModel();
+
+    void setWarnRadioButton(int level,QRadioButton *radio1,QRadioButton *radio2);
 
     ~MainWindow();
 signals:

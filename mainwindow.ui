@@ -45,7 +45,7 @@
      <enum>QTabWidget::Triangular</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tabWatch">
      <attribute name="title">
@@ -70,353 +70,465 @@
        <string>主要参数</string>
       </property>
      </widget>
-     <widget class="QWidget" name="layoutWidget1">
+     <widget class="QGroupBox" name="groupBoxCellVoltage">
       <property name="geometry">
        <rect>
-        <x>658</x>
-        <y>0</y>
-        <width>411</width>
-        <height>501</height>
+        <x>659</x>
+        <y>254</y>
+        <width>409</width>
+        <height>246</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>电芯电压</string>
+      </property>
+      <widget class="QWidget" name="layoutWidget3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>385</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Cell01</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell01"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Cell02</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell02"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Cell03</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell03"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Cell04</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell04">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Cell05</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell05"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Cell06</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell06"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Cell07</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell07"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Cell08</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell08"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Cell09</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell09">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Cell10</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell10"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Cell11</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell11"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Cell12</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell12"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Cell13</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell13"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>Cell14</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell14">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_15">
+            <property name="text">
+             <string>Cell15</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell15"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_16">
+            <property name="text">
+             <string>Cell16</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell16"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_17">
+            <property name="text">
+             <string>Cell17</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell17"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_18">
+            <property name="text">
+             <string>Cell18</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell18"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_19">
+            <property name="text">
+             <string>Cell19</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell19">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_20">
+            <property name="text">
+             <string>Cell20</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditCell20"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>662</x>
+        <y>2</y>
+        <width>401</width>
+        <height>251</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_18">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="2,1">
-         <item>
-          <widget class="QTabWidget" name="tabWidgetTemperature">
-           <property name="currentIndex">
-            <number>0</number>
+        <widget class="QTabWidget" name="tabWidgetTemperature">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tabTemp1">
+          <attribute name="title">
+           <string>温度1</string>
+          </attribute>
+          <widget class="QWidget" name="">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>10</y>
+             <width>191</width>
+             <height>181</height>
+            </rect>
            </property>
-           <widget class="QWidget" name="tabTemp1">
-            <attribute name="title">
-             <string>温度1</string>
-            </attribute>
-            <widget class="QWidget" name="layoutWidget2">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>20</y>
-               <width>251</width>
-               <height>181</height>
-              </rect>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
-              <item>
-               <layout class="QFormLayout" name="formLayout1">
-                <property name="fieldGrowthPolicy">
-                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
+            <item>
+             <layout class="QFormLayout" name="formLayout1">
+              <property name="fieldGrowthPolicy">
+               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_30">
+                <property name="text">
+                 <string>温度01：</string>
                 </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_30">
-                  <property name="text">
-                   <string>温度01：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp01"/>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_31">
-                  <property name="text">
-                   <string>温度02：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp02"/>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_32">
-                  <property name="text">
-                   <string>温度03：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp03"/>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="label_33">
-                  <property name="text">
-                   <string>温度04：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp04"/>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QLabel" name="label_34">
-                  <property name="text">
-                   <string>温度05：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp05"/>
-                </item>
-                <item row="5" column="0">
-                 <widget class="QLabel" name="label_35">
-                  <property name="text">
-                   <string>温度06：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp06"/>
-                </item>
-                <item row="6" column="0">
-                 <widget class="QLabel" name="label_36">
-                  <property name="text">
-                   <string>温度07：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp07"/>
-                </item>
-               </layout>
+               </widget>
               </item>
-              <item>
-               <layout class="QFormLayout" name="formLayout2">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_37">
-                  <property name="text">
-                   <string>温度08：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp08"/>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_38">
-                  <property name="text">
-                   <string>温度09：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp09"/>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp10"/>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="label_40">
-                  <property name="text">
-                   <string>温度11：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QLabel" name="label_41">
-                  <property name="text">
-                   <string>温度12：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="0">
-                 <widget class="QLabel" name="label_42">
-                  <property name="text">
-                   <string>温度13：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp11"/>
-                </item>
-                <item row="4" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp12"/>
-                </item>
-                <item row="5" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp13"/>
-                </item>
-                <item row="6" column="0">
-                 <widget class="QLabel" name="label_43">
-                  <property name="text">
-                   <string>温度14：</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1">
-                 <widget class="QLineEdit" name="lineEditTemp14"/>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_39">
-                  <property name="text">
-                   <string>温度10：</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="lineEditTemp01"/>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_31">
+                <property name="text">
+                 <string>温度02：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="lineEditTemp02"/>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_32">
+                <property name="text">
+                 <string>温度03：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="lineEditTemp03"/>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_33">
+                <property name="text">
+                 <string>温度04：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="lineEditTemp04"/>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_34">
+                <property name="text">
+                 <string>温度05：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLineEdit" name="lineEditTemp05"/>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="label_35">
+                <property name="text">
+                 <string>温度06：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="1">
+               <widget class="QLineEdit" name="lineEditTemp06"/>
+              </item>
+              <item row="6" column="0">
+               <widget class="QLabel" name="label_36">
+                <property name="text">
+                 <string>温度07：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1">
+               <widget class="QLineEdit" name="lineEditTemp07"/>
               </item>
              </layout>
-            </widget>
-           </widget>
-           <widget class="QWidget" name="tabTemp2">
-            <attribute name="title">
-             <string>温度2</string>
-            </attribute>
-           </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout2">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_37">
+                <property name="text">
+                 <string>温度08：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="lineEditTemp08"/>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_38">
+                <property name="text">
+                 <string>温度09：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="lineEditTemp09"/>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="lineEditTemp10"/>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_40">
+                <property name="text">
+                 <string>温度11：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_41">
+                <property name="text">
+                 <string>温度12：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="label_42">
+                <property name="text">
+                 <string>温度13：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="lineEditTemp11"/>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLineEdit" name="lineEditTemp12"/>
+              </item>
+              <item row="5" column="1">
+               <widget class="QLineEdit" name="lineEditTemp13"/>
+              </item>
+              <item row="6" column="0">
+               <widget class="QLabel" name="label_43">
+                <property name="text">
+                 <string>温度14：</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1">
+               <widget class="QLineEdit" name="lineEditTemp14"/>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_39">
+                <property name="text">
+                 <string>温度10：</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBoxFaltInfo">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="title">
-            <string>错误发生次数</string>
-           </property>
-           <widget class="QWidget" name="layoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>20</y>
-              <width>121</width>
-              <height>248</height>
-             </rect>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelCOC">
-                 <property name="text">
-                  <string>COC：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditCOC"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelDOC">
-                 <property name="text">
-                  <string>DOC：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditDOC"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelCOV">
-                 <property name="text">
-                  <string>COV：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditCOV"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelCUV">
-                 <property name="text">
-                  <string>CUV：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditCUV"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelCOT">
-                 <property name="text">
-                  <string>COT：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditCOT"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelCUT">
-                 <property name="text">
-                  <string>CUT：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditCUT"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelDOT">
-                 <property name="text">
-                  <string>DOT：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditDOT"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelDUT">
-                 <property name="text">
-                  <string>DUT：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditDUT"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_19" stretch="1,3">
-               <item>
-                <widget class="QLabel" name="labelLTC_COM">
-                 <property name="text">
-                  <string>LTC：</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditLTC_COM"/>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
-          </widget>
-         </item>
-        </layout>
+         </widget>
+         <widget class="QWidget" name="tabTemp2">
+          <attribute name="title">
+           <string>温度2</string>
+          </attribute>
+         </widget>
+        </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBoxCellVoltage">
+        <widget class="QGroupBox" name="groupBoxFaltInfo">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -424,251 +536,267 @@
           </sizepolicy>
          </property>
          <property name="title">
-          <string>电芯电压</string>
+          <string>错误发生次数</string>
          </property>
-         <widget class="QWidget" name="layoutWidget3">
+         <widget class="QWidget" name="">
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>10</y>
-            <width>385</width>
-            <height>231</height>
+            <y>20</y>
+            <width>181</width>
+            <height>221</height>
            </rect>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="labelCOC">
                <property name="text">
-                <string>Cell01</string>
+                <string>COC：</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell01"/>
+              <widget class="QLineEdit" name="lineEditCOC"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_3">
+              <widget class="QRadioButton" name="COCL1">
                <property name="text">
-                <string>Cell02</string>
+                <string>一级</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell02"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_4">
+              <widget class="QRadioButton" name="COCL2">
                <property name="text">
-                <string>Cell03</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell03"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>Cell04</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell04">
-               <property name="text">
-                <string/>
+                <string>二级</string>
                </property>
               </widget>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
              <item>
-              <widget class="QLabel" name="label_6">
+              <widget class="QLabel" name="labelDOC">
                <property name="text">
-                <string>Cell05</string>
+                <string>DOC：</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell05"/>
+              <widget class="QLineEdit" name="lineEditDOC"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_7">
+              <widget class="QRadioButton" name="DOCL1">
                <property name="text">
-                <string>Cell06</string>
+                <string>一级</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell06"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_8">
+              <widget class="QRadioButton" name="DOCL2">
                <property name="text">
-                <string>Cell07</string>
+                <string>二级</string>
                </property>
               </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell07"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>Cell08</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell08"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <layout class="QHBoxLayout" name="horizontalLayout_11">
              <item>
-              <widget class="QLabel" name="label_10">
+              <widget class="QLabel" name="labelCOV">
                <property name="text">
-                <string>Cell09</string>
+                <string>COV：</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell09">
+              <widget class="QLineEdit" name="lineEditCOV"/>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="COVL1">
                <property name="text">
-                <string/>
+                <string>一级</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_11">
+              <widget class="QRadioButton" name="COVL2">
                <property name="text">
-                <string>Cell10</string>
+                <string>二级</string>
                </property>
               </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell10"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>Cell11</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell11"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Cell12</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell12"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <layout class="QHBoxLayout" name="horizontalLayout_12">
              <item>
-              <widget class="QLabel" name="label_13">
+              <widget class="QLabel" name="labelCUV">
                <property name="text">
-                <string>Cell13</string>
+                <string>CUV：</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell13"/>
+              <widget class="QLineEdit" name="lineEditCUV"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_14">
+              <widget class="QRadioButton" name="CUVL1">
                <property name="text">
-                <string>Cell14</string>
+                <string>一级</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell14">
+              <widget class="QRadioButton" name="CUVL2">
                <property name="text">
-                <string/>
+                <string>二级</string>
                </property>
               </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_15">
-               <property name="text">
-                <string>Cell15</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell15"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_16">
-               <property name="text">
-                <string>Cell16</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCell16"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
-              <widget class="QLabel" name="label_17">
+              <widget class="QLabel" name="labelCOT">
                <property name="text">
-                <string>Cell17</string>
+                <string>COT：</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell17"/>
+              <widget class="QLineEdit" name="lineEditCOT"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_18">
+              <widget class="QRadioButton" name="COTL1">
                <property name="text">
-                <string>Cell18</string>
+                <string>一级</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell18"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_19">
+              <widget class="QRadioButton" name="COTL2">
                <property name="text">
-                <string>Cell19</string>
+                <string>二级</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <item>
+              <widget class="QLabel" name="labelCUT">
+               <property name="text">
+                <string>CUT：</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell19">
+              <widget class="QLineEdit" name="lineEditCUT"/>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="CUTL1">
                <property name="text">
-                <string/>
+                <string>一级</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_20">
+              <widget class="QRadioButton" name="CUTL2">
                <property name="text">
-                <string>Cell20</string>
+                <string>二级</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_15">
+             <item>
+              <widget class="QLabel" name="labelDOT">
+               <property name="text">
+                <string>DOT：</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditCell20"/>
+              <widget class="QLineEdit" name="lineEditDOT"/>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="DOTL1">
+               <property name="text">
+                <string>一级</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="DOTL2">
+               <property name="text">
+                <string>二级</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_16">
+             <item>
+              <widget class="QLabel" name="labelDUT">
+               <property name="text">
+                <string>DUT：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditDUT"/>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="DUTL1">
+               <property name="text">
+                <string>一级</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="DUTL2">
+               <property name="text">
+                <string>二级</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <item>
+              <widget class="QLabel" name="labelLTC_COM">
+               <property name="text">
+                <string>LTC：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditLTC_COM"/>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="LTCL1">
+               <property name="text">
+                <string>开路</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="LTCL2">
+               <property name="text">
+                <string>通信</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>

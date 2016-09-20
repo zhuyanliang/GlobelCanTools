@@ -243,7 +243,7 @@ void MainWindow::timeUpdate(void)
     if(!m_devsetdlg->getCan()->getIsOpen() ||
             !m_devsetdlg->getCan()->getIsStart())
     {
-        return;
+        //return;
     }
     float maxV  = m_dataProcess->getMaxCellVoltage();
     float minV = m_dataProcess->getMinCellVoltage();
@@ -324,6 +324,24 @@ void MainWindow::timeUpdate(void)
     //系统参数刷新
     unsigned char readData[8] = {0};
     short tempData = 0;
+
+    //获取系统中的警告和错误信息
+    memset(readData,0,8);
+    tempData = 0;
+    m_dataProcess->getBattWarnError(readData,8);
+    SysWarningDef warn;
+    warn = *(reinterpret_cast<SysWarningDef*>(readData));
+    if(warn.all != 0)
+    {
+        setWarnRadioButton((int)warn.COV,ui->COVL1,ui->COVL2);
+        setWarnRadioButton((int)warn.CUV,ui->CUVL1,ui->CUVL2);
+        setWarnRadioButton((int)warn.COT,ui->COTL1,ui->COTL2);
+        setWarnRadioButton((int)warn.CUT,ui->CUTL1,ui->CUTL2);
+        setWarnRadioButton((int)warn.DOT,ui->DOTL1,ui->DOTL2);
+        setWarnRadioButton((int)warn.DUT,ui->DUTL1,ui->DUTL2);
+        setWarnRadioButton((int)warn.COC,ui->COCL1,ui->COCL2);
+        setWarnRadioButton((int)warn.DOC,ui->DOCL1,ui->DOCL2);
+    }
 
     // NOR_REC
     memset(readData,0,8);
@@ -430,6 +448,23 @@ void MainWindow::timeUpdate(void)
     modelTestData->setItem(rows,13,new QStandardItem(QString::number(tempSum/4)));
     modelTestData->setItem(rows,14,new QStandardItem(QString::number(vDlt)));
 
+}
+
+void MainWindow::setWarnRadioButton(int level,QRadioButton *radio1,QRadioButton *radio2)
+{
+    if(0 == level)
+    {
+        radio1->setChecked(false);
+        radio2->setChecked(false);
+    }
+    else if(1 == level)
+    {
+        radio1->setChecked(true);
+    }
+    else if(2 == level)
+    {
+        radio2->setChecked(true);
+    }
 }
 
 void MainWindow::dataReceived(VCI_CAN_OBJ &data)
