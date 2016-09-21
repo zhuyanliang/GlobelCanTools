@@ -199,7 +199,7 @@ void MainWindow::initUI()
 
     // 设置导出数据的model
     modelTestData = new QStandardItemModel();
-    modelTestData->setColumnCount(25);
+    modelTestData->setColumnCount(26);
     modelTestData->setHeaderData(0,Qt::Horizontal,QString::fromLocal8Bit("时间"));
     modelTestData->setHeaderData(1,Qt::Horizontal,QString::fromLocal8Bit("电池包状态"));
     modelTestData->setHeaderData(2,Qt::Horizontal,QString::fromLocal8Bit("总电压"));
@@ -225,6 +225,7 @@ void MainWindow::initUI()
     modelTestData->setHeaderData(22,Qt::Horizontal,QString::fromLocal8Bit("充电过流"));
     modelTestData->setHeaderData(23,Qt::Horizontal,QString::fromLocal8Bit("放电过流"));
     modelTestData->setHeaderData(24,Qt::Horizontal,QString::fromLocal8Bit("温差过大"));
+    modelTestData->setHeaderData(25,Qt::Horizontal,QString::fromLocal8Bit("压差过大"));
 
     //默认不记录数据
     ui->radioButtonNo->setChecked(true);
@@ -465,6 +466,7 @@ void MainWindow::timeUpdate(void)
     modelTestData->setItem(rows,22,new QStandardItem(QString::number(warn.COC)));
     modelTestData->setItem(rows,23,new QStandardItem(QString::number(warn.DOC)));
     modelTestData->setItem(rows,24,new QStandardItem(QString::number(warn.TIB)));
+    modelTestData->setItem(rows,25,new QStandardItem(QString::number(warn.CIB)));
 }
 
 void MainWindow::setWarnRadioButton(int level,QRadioButton *radio1,QRadioButton *radio2)
