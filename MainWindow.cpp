@@ -199,7 +199,7 @@ void MainWindow::initUI()
 
     // 设置导出数据的model
     modelTestData = new QStandardItemModel();
-    modelTestData->setColumnCount(15);
+    modelTestData->setColumnCount(25);
     modelTestData->setHeaderData(0,Qt::Horizontal,QString::fromLocal8Bit("时间"));
     modelTestData->setHeaderData(1,Qt::Horizontal,QString::fromLocal8Bit("电池包状态"));
     modelTestData->setHeaderData(2,Qt::Horizontal,QString::fromLocal8Bit("总电压"));
@@ -215,6 +215,16 @@ void MainWindow::initUI()
     modelTestData->setHeaderData(12,Qt::Horizontal,QString::fromLocal8Bit("编号TMin"));
     modelTestData->setHeaderData(13,Qt::Horizontal,QString::fromLocal8Bit("平均温度"));
     modelTestData->setHeaderData(14,Qt::Horizontal,QString::fromLocal8Bit("电压差"));
+    modelTestData->setHeaderData(15,Qt::Horizontal,QString::fromLocal8Bit("温度差"));
+    modelTestData->setHeaderData(16,Qt::Horizontal,QString::fromLocal8Bit("单体过压"));
+    modelTestData->setHeaderData(17,Qt::Horizontal,QString::fromLocal8Bit("单体欠压"));
+    modelTestData->setHeaderData(18,Qt::Horizontal,QString::fromLocal8Bit("充电高温"));
+    modelTestData->setHeaderData(19,Qt::Horizontal,QString::fromLocal8Bit("充电低温"));
+    modelTestData->setHeaderData(20,Qt::Horizontal,QString::fromLocal8Bit("放电高温"));
+    modelTestData->setHeaderData(21,Qt::Horizontal,QString::fromLocal8Bit("放电低温"));
+    modelTestData->setHeaderData(22,Qt::Horizontal,QString::fromLocal8Bit("充电过流"));
+    modelTestData->setHeaderData(23,Qt::Horizontal,QString::fromLocal8Bit("放电过流"));
+    modelTestData->setHeaderData(24,Qt::Horizontal,QString::fromLocal8Bit("温差过大"));
 
     //默认不记录数据
     ui->radioButtonNo->setChecked(true);
@@ -445,7 +455,16 @@ void MainWindow::timeUpdate(void)
     }
     modelTestData->setItem(rows,13,new QStandardItem(QString::number(tempSum/4)));
     modelTestData->setItem(rows,14,new QStandardItem(QString::number(vDlt)));
-
+    modelTestData->setItem(rows,15,new QStandardItem(QString::number(tDlt)));
+    modelTestData->setItem(rows,16,new QStandardItem(QString::number(warn.COV)));
+    modelTestData->setItem(rows,17,new QStandardItem(QString::number(warn.CUV)));
+    modelTestData->setItem(rows,18,new QStandardItem(QString::number(warn.COT)));
+    modelTestData->setItem(rows,19,new QStandardItem(QString::number(warn.CUT)));
+    modelTestData->setItem(rows,20,new QStandardItem(QString::number(warn.DOT)));
+    modelTestData->setItem(rows,21,new QStandardItem(QString::number(warn.DUT)));
+    modelTestData->setItem(rows,22,new QStandardItem(QString::number(warn.COC)));
+    modelTestData->setItem(rows,23,new QStandardItem(QString::number(warn.DOC)));
+    modelTestData->setItem(rows,24,new QStandardItem(QString::number(warn.TIB)));
 }
 
 void MainWindow::setWarnRadioButton(int level,QRadioButton *radio1,QRadioButton *radio2)
