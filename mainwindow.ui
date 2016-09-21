@@ -337,7 +337,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>662</x>
@@ -356,7 +356,7 @@
           <attribute name="title">
            <string>温度1</string>
           </attribute>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -536,9 +536,9 @@
           </sizepolicy>
          </property>
          <property name="title">
-          <string>错误发生次数</string>
+          <string>错误信息</string>
          </property>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
             <x>10</x>

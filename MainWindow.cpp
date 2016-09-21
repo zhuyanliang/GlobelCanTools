@@ -331,17 +331,15 @@ void MainWindow::timeUpdate(void)
     m_dataProcess->getBattWarnError(readData,8);
     SysWarningDef warn;
     warn = *(reinterpret_cast<SysWarningDef*>(readData));
-    if(warn.all != 0)
-    {
-        setWarnRadioButton((int)warn.COV,ui->COVL1,ui->COVL2);
-        setWarnRadioButton((int)warn.CUV,ui->CUVL1,ui->CUVL2);
-        setWarnRadioButton((int)warn.COT,ui->COTL1,ui->COTL2);
-        setWarnRadioButton((int)warn.CUT,ui->CUTL1,ui->CUTL2);
-        setWarnRadioButton((int)warn.DOT,ui->DOTL1,ui->DOTL2);
-        setWarnRadioButton((int)warn.DUT,ui->DUTL1,ui->DUTL2);
-        setWarnRadioButton((int)warn.COC,ui->COCL1,ui->COCL2);
-        setWarnRadioButton((int)warn.DOC,ui->DOCL1,ui->DOCL2);
-    }
+    setWarnRadioButton((int)warn.COV,ui->COVL1,ui->COVL2);
+    setWarnRadioButton((int)warn.CUV,ui->CUVL1,ui->CUVL2);
+    setWarnRadioButton((int)warn.COT,ui->COTL1,ui->COTL2);
+    setWarnRadioButton((int)warn.CUT,ui->CUTL1,ui->CUTL2);
+    setWarnRadioButton((int)warn.DOT,ui->DOTL1,ui->DOTL2);
+    setWarnRadioButton((int)warn.DUT,ui->DUTL1,ui->DUTL2);
+    setWarnRadioButton((int)warn.COC,ui->COCL1,ui->COCL2);
+    setWarnRadioButton((int)warn.DOC,ui->DOCL1,ui->DOCL2);
+
 
     // NOR_REC
     memset(readData,0,8);
@@ -658,6 +656,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             m_dataProcess->timerStop();
         }
     }
+    QMainWindow::closeEvent(event);
     qDebug() << "Close";
 }
 
