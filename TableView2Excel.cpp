@@ -33,7 +33,8 @@ bool TableView2Excel::ExportToExcel(QTableView *tableView,QStandardItemModel *mo
         qDebug() << "DB is inValid()";
         return false;   //! type error
     }
-//    QString t = QString::number(QDateTime::currentDateTime().toTime_t());
+
+    QString date = QDate::currentDate().toString("yyyyMMdd");
     QString t = QTime::currentTime().toString();
 
     t.remove(QChar(':'));
@@ -41,8 +42,8 @@ bool TableView2Excel::ExportToExcel(QTableView *tableView,QStandardItemModel *mo
 //    QString dsn = "DRIVER={Microsoft Excel Driver (*.xls)};"
 //                "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\"test.xls\";DBQ=test.xls";
     QString dsn = "DRIVER={Microsoft Excel Driver (*.xls)};"
-                  "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\""+ t + ".xls\";DBQ="
-                   + t +".xls";
+                  "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\""+ date + t + ".xls\";DBQ="
+                   + date + t +".xls";
     qDebug() << dsn;
     db.setDatabaseName(dsn);
     if(!db.open())

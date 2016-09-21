@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<QItemSelection>("QItemSelection");
 
     QApplication a(argc, argv);
+
     MainWindow w;
     w.show();
     w.setFixedSize(w.width(),w.height());

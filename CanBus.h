@@ -2,6 +2,7 @@
 #define CANBUS_H
 #include "DataType.h"
 #include <string.h>
+#include <QObject>
 
 #ifdef __cplusplus
 extern "C"{
@@ -13,7 +14,7 @@ extern "C"{
 }
 #endif
 
-class CanBus
+class CanBus : QObject
 {
 private:
 

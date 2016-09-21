@@ -12,7 +12,6 @@ TEMPLATE = app
 CONFIG   += qaxcontainer
 
 SOURCES +=\
-        MainWindow.cpp \
     VoltageUI.cpp \
     CellMinMaxInfo.cpp \
     AmpereMeter.cpp \
@@ -27,7 +26,9 @@ SOURCES +=\
     DownLoadUi.cpp \
     Main.cpp \
     SysPraModel.cpp \
-    XmlConfig.cpp
+    XmlConfig.cpp \
+    MainWindowUI.cpp \
+    MainWindowSlots.cpp
 
 HEADERS  += MainWindow.h \
     VoltageUI.h \
