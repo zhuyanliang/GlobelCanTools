@@ -224,11 +224,13 @@ void MainWindow::initUI()
 
     for(int i=0;i<20;i++)
     {
-        modelTestData->setHeaderData(26+i,Qt::Horizontal,QString::fromLocal8Bit("Cell" + (i+1)));
+        modelTestData->setHeaderData(26+i,Qt::Horizontal,
+                                     "Cell" + QString::number(i+1));
     }
 
     //默认不记录数据
-    ui->radioButtonNo->setChecked(true);
+    ui->radioButtonNo->setChecked(false);
+    ui->radioButtonYes->setChecked(true);
 }
 
 
