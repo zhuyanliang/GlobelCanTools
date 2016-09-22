@@ -204,11 +204,11 @@ void MainWindow::initUI()
     modelTestData->setHeaderData(6,Qt::Horizontal,QString::fromLocal8Bit("编号VMax"));
     modelTestData->setHeaderData(7,Qt::Horizontal,QString::fromLocal8Bit("最小电压"));
     modelTestData->setHeaderData(8,Qt::Horizontal,QString::fromLocal8Bit("编号VMin"));
-    modelTestData->setHeaderData(9,Qt::Horizontal,QString::fromLocal8Bit("最大温度"));
-    modelTestData->setHeaderData(10,Qt::Horizontal,QString::fromLocal8Bit("编号TMax"));
-    modelTestData->setHeaderData(11,Qt::Horizontal,QString::fromLocal8Bit("最小温度"));
-    modelTestData->setHeaderData(12,Qt::Horizontal,QString::fromLocal8Bit("编号TMin"));
-    modelTestData->setHeaderData(13,Qt::Horizontal,QString::fromLocal8Bit("平均温度"));
+    modelTestData->setHeaderData(9,Qt::Horizontal,QString::fromLocal8Bit("温度1"));
+    modelTestData->setHeaderData(10,Qt::Horizontal,QString::fromLocal8Bit("温度2"));
+    modelTestData->setHeaderData(11,Qt::Horizontal,QString::fromLocal8Bit("温度3"));
+    modelTestData->setHeaderData(12,Qt::Horizontal,QString::fromLocal8Bit("温度4"));
+    modelTestData->setHeaderData(13,Qt::Horizontal,QString::fromLocal8Bit("循环次数"));
     modelTestData->setHeaderData(14,Qt::Horizontal,QString::fromLocal8Bit("电压差"));
     modelTestData->setHeaderData(15,Qt::Horizontal,QString::fromLocal8Bit("温度差"));
     modelTestData->setHeaderData(16,Qt::Horizontal,QString::fromLocal8Bit("单体过压警告等级"));

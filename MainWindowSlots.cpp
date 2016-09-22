@@ -142,7 +142,6 @@ void MainWindow::timeUpdate(void)
     setWarnRadioButton((int)warn.COC,ui->COCL1,ui->COCL2);
     setWarnRadioButton((int)warn.DOC,ui->DOCL1,ui->DOCL2);
 
-
     // NOR_REC
     memset(readData,0,8);
     unsigned short times = 0;
@@ -236,16 +235,11 @@ void MainWindow::timeUpdate(void)
     modelTestData->setItem(rows,6,new QStandardItem(QString::number(maxVP)));
     modelTestData->setItem(rows,7,new QStandardItem(QString::number(minV)));
     modelTestData->setItem(rows,8,new QStandardItem(QString::number(minVP)));
-    modelTestData->setItem(rows,9,new QStandardItem(QString::number(maxT)));
-    modelTestData->setItem(rows,10,new QStandardItem(QString::number(maxTP)));
-    modelTestData->setItem(rows,11,new QStandardItem(QString::number(minT)));
-    modelTestData->setItem(rows,12,new QStandardItem(QString::number(minTP)));
-    uint tempSum = 0;
-    for(int i=0;i<4;i++)
-    {
-        tempSum += temp[i];
-    }
-    modelTestData->setItem(rows,13,new QStandardItem(QString::number(tempSum/4)));
+    modelTestData->setItem(rows,9,new QStandardItem(QString::number(temp[0])));
+    modelTestData->setItem(rows,10,new QStandardItem(QString::number(temp[1])));
+    modelTestData->setItem(rows,11,new QStandardItem(QString::number(temp[2])));
+    modelTestData->setItem(rows,12,new QStandardItem(QString::number(temp[3])));
+    modelTestData->setItem(rows,13,new QStandardItem(QString::number(times)));
     modelTestData->setItem(rows,14,new QStandardItem(QString::number(vDlt)));
     modelTestData->setItem(rows,15,new QStandardItem(QString::number(tDlt)));
     modelTestData->setItem(rows,16,new QStandardItem(QString::number(warn.COV)));
