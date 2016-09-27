@@ -46,6 +46,11 @@ void DevSetDialog::on_comboBoxBaudrate_activated(const QString &arg1)
         ui->lineEditTimer0->setText("0x04");
         ui->lineEditTimer1->setText("0x1C");
     }
+    if("125kbps" == arg1)
+    {
+        ui->lineEditTimer0->setText("0x03");
+        ui->lineEditTimer1->setText("0x1C");
+    }
     else if("250kbps" == arg1)
     {
         ui->lineEditTimer0->setText("0x01");

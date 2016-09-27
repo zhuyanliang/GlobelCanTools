@@ -13,7 +13,8 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 
-DataProcess::DataProcess()
+DataProcess::DataProcess(QStandardItemModel *mod)
+    :model(mod)
 {
     m_timer = new QTimer();
     connect(m_timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
@@ -21,7 +22,12 @@ DataProcess::DataProcess()
     m_can = CanBus::getInstance();
     m_requestNum = 0;
 
-    m_tableView2excel = new TableView2Excel();
+    m_tableView2excel = new TableView2Excel(model);
+}
+
+void DataProcess::setModel(QStandardItemModel *mod)
+{
+    this->model = mod;
 }
 
 void DataProcess::onTimeout()
@@ -141,9 +147,9 @@ void DataProcess::sendGetDataRequest()
     m_can->CanTransmit(devType,devIndex,canIndex,&sendFrame,1);
 }
 
-int DataProcess::dataStore(QTableView *tableView,QStandardItemModel *model)
+int DataProcess::dataStore()
 {
-    if(m_tableView2excel->ExportToExcel(tableView,model))
+    if(m_tableView2excel->ExportToExcel())
         return model->rowCount();
     else
         return 0;

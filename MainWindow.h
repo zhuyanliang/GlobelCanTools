@@ -78,6 +78,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
 
     void initModel();
+    void initTestDataModel();
 
     void setWarnRadioButton(int level,QRadioButton *radio1,QRadioButton *radio2);
 
@@ -94,8 +95,6 @@ private slots:
     void on_actionBoardInfo_triggered();
 
     void dataReceived(VCI_CAN_OBJ &dat);
-
-    void on_pushButtonOutputData_clicked();
 
     void on_pushButtonWritePrograme_clicked();
 

@@ -25,6 +25,8 @@ const char* IndictorLabelText[IndictorLightNum] = {
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    model(NULL),
+    modelTestData(NULL),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -35,8 +37,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //
     connect(m_dataProcess,SIGNAL(datRecSignal(VCI_CAN_OBJ&)),
             this,SLOT(dataReceived(VCI_CAN_OBJ&)),Qt::DirectConnection);
-
-    ui->pushButtonOutputData->setEnabled(false);
 
     //电池信息用的定时器
     m_timer = new QTimer(this);
@@ -50,13 +50,6 @@ void MainWindow::initUI()
     statusLabel = new QLabel(this);
     ui->statusBar->addWidget(statusLabel);
     model = new QStandardItemModel();
-
-    //CAN数据处理器
-    m_dataProcess = new DataProcess();
-    m_dataProcess->setTimerInterval(100); //50ms接收一次数据
-    m_sysPraModel = new SysPraModel(m_dataProcess,ui->tabSet);
-    m_sysPraModel->move(0,5);
-    m_sysPraModel->show();
 
     //CAN设备设置界面初始化
     m_devsetdlg = new DevSetDialog(this);
@@ -228,6 +221,13 @@ void MainWindow::initUI()
                                      "Cell" + QString::number(i+1));
     }
 
+    //CAN数据处理器
+    m_dataProcess = new DataProcess(modelTestData);
+    m_dataProcess->setTimerInterval(50); //50ms接收一次数据
+    m_sysPraModel = new SysPraModel(m_dataProcess,ui->tabSet);
+    m_sysPraModel->move(0,5);
+    m_sysPraModel->show();
+
     //默认不记录数据
     ui->radioButtonNo->setChecked(false);
     ui->radioButtonYes->setChecked(true);
@@ -270,10 +270,7 @@ void MainWindow::on_pushButtonOpen_clicked()
             m_devsetdlg->getCan()->setStartorStop(false);//关闭CAN
             m_dataProcess->timerStop();
         }
-        if(modelTestData->rowCount() > 0)
-            ui->pushButtonOutputData->setEnabled(true);
-        else
-            ui->pushButtonOutputData->setEnabled(false);
+
         ui->pushButtonWritePrograme->setEnabled(false);
 
     }
@@ -296,7 +293,6 @@ void MainWindow::on_pushButtonOpen_clicked()
             ui->pushButtonOpen->setIcon(icon);
             //启动CAN发送接收
             m_dataProcess->timerStart();
-            ui->pushButtonOutputData->setEnabled(false);
             ui->pushButtonWritePrograme->setEnabled(true);
         }
     }

@@ -3,29 +3,48 @@
 #include <QSqlQuery>
 #include <QDate>
 #include <QDebug>
+#include <QTableView>
 #include <QStandardItemModel>
-#include <QCoreApplication>
 #include <QProgressBar>
+#include <QCoreApplication>
 
-TableView2Excel::TableView2Excel(QStandardItemModel *mod,QObject *parent) :
-    QObject(parent),model(mod)
+
+TableView2Excel::TableView2Excel(QObject *parent) :
+    QObject(parent)
 {
-    sSql = "";
-    sheetName = "BMSData";
+}
+
+bool TableView2Excel::ExportToExcel(QTableView *tableView,QStandardItemModel *model)
+{
+    Q_UNUSED(tableView);
+    int tableR = model->rowCount();
+    int tableC = model->columnCount();
+
+    QProgressBar probar;
+    probar.setVisible(true);
+    probar.setValue(0);
+    probar.setMinimum(0);
+    probar.setMaximum(tableR);
+    probar.show();
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC","excelexport");
     if( !db.isValid())
     {
         qDebug() << "DB is inValid()";
+        return false;   //! type error
     }
 
     QString date = QDate::currentDate().toString("yyyyMMdd");
-    QString time = QTime::currentTime().toString();
-    time.remove(QChar(':'));
-    time.trimmed();
-    dsn = "DRIVER={Microsoft Excel Driver (*.xls)};"
-                  "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\""+ date + time + ".xls\";DBQ="
-                   + date + time +".xls";
+    QString t = QTime::currentTime().toString();
 
+    t.remove(QChar(':'));
+    t.trimmed();
+//    QString dsn = "DRIVER={Microsoft Excel Driver (*.xls)};"
+//                "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\"test.xls\";DBQ=test.xls";
+    QString dsn = "DRIVER={Microsoft Excel Driver (*.xls)};"
+                  "DSN='';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\""+ date + t + ".xls\";DBQ="
+                   + date + t +".xls";
+    qDebug() << dsn;
     db.setDatabaseName(dsn);
     if(!db.open())
     {
@@ -33,11 +52,14 @@ TableView2Excel::TableView2Excel(QStandardItemModel *mod,QObject *parent) :
         QSqlDatabase::removeDatabase("excelexport");
     }
 
-    query = new QSqlQuery(db);
-
+    QSqlQuery query(db);
+    QString sSql = "";
+    bool state;
+    QString sheetName = "BMSData";
     sSql = QString("DROP TABLE [%1]").arg(sheetName);
-    query->exec( sSql);
+    query.exec( sSql);
 
+    //create the table (sheet in Excel file)
     sSql = QString("CREATE TABLE [%1] (").arg(sheetName);
 
     for(int i=0;i<model->columnCount()-1;i++)
@@ -46,28 +68,17 @@ TableView2Excel::TableView2Excel(QStandardItemModel *mod,QObject *parent) :
     }
     sSql += "[" +model->horizontalHeaderItem(model->columnCount()-1)->text() + "] char(64) " + ")";
 
-    query->prepare( sSql);
-    if( !query->exec())
+    qDebug() << sSql;
+
+    state = query.prepare( sSql);
+    if( !query.exec())
     {
         qDebug() << "export2Excel failed: Create Excel sheet failed.";
         db.close();
         QSqlDatabase::removeDatabase("excelexport");
     }
-}
 
-TableView2Excel::~TableView2Excel()
-{
-    delete query;
-    db.close();
-    QSqlDatabase::removeDatabase("excelexport");
-}
-
-bool TableView2Excel::ExportToExcel()
-{
-    int tableR = model->rowCount();
-    int tableC = model->columnCount();
-
-    sSql = QString("INSERT INTO [%1] (").arg(sheetName);
+    sSql = QString("INSERT INTO [%1] (").arg( sheetName);
 
     for(int i=0;i<model->columnCount()-1;i++)
     {
@@ -78,26 +89,31 @@ bool TableView2Excel::ExportToExcel()
         sSql += QString(" :data%1").arg(i) + ",";
     sSql += QString(" :data%1").arg(model->columnCount()) + ")";
 
-    query->prepare( sSql);
+    qDebug() << sSql;
+
+    state = query.prepare( sSql);
 
     for(int i=0;i<tableR;i++)
     {
         for(int j=0;j<tableC;j++)
         {
-            query->bindValue(QString(":data%1").arg(j+1), model->item(i,j)->text());
+            query.bindValue(QString(":data%1").arg(j+1), model->item(i,j)->text());
         }
-        if( !query->exec())
+        if( !query.exec())
         {
             qDebug() << "export2Excel failed: insert Rows " << i << " Error!";
              db.close();
              QSqlDatabase::removeDatabase("excelexport");
         }
         QCoreApplication::processEvents();
+        probar.setValue(i);
     }
+
+    db.close();
+    QSqlDatabase::removeDatabase("excelexport");
 
     return true;
 }
-
 
 void TableView2Excel::printError( QSqlError error)
 {

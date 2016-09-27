@@ -20,16 +20,17 @@ private:
     QMap<uint32_t,VCI_CAN_OBJ> m_dataRecv;
     int m_requestNum;
     TableView2Excel *m_tableView2excel;
-
+    QStandardItemModel *model;
     float m_cellsVolt[20];
 
 public:
-    explicit DataProcess();
+    explicit DataProcess(QStandardItemModel *mod);
     int receiveData(void);
-    int dataStore(QTableView *tableView, QStandardItemModel *model);
+    int dataStore();
     ushort getCurrent();
     float getTotalVoltage();
     uchar getSoc();
+    void setModel(QStandardItemModel *model);
 
     float getMaxCellVoltage();
     float getMinCellVoltage();

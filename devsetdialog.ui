@@ -214,6 +214,11 @@
           </item>
           <item>
            <property name="text">
+            <string>125kbps</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>250kbps</string>
            </property>
           </item>

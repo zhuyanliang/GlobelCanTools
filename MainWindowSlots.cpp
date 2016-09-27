@@ -41,12 +41,55 @@ void MainWindow::initModel()
     ui->tableView->setModel(model);
 }
 
+void MainWindow::initTestDataModel()
+{
+    if(modelTestData != NULL)
+        delete modelTestData;
+
+    // 设置导出数据的model
+    modelTestData = new QStandardItemModel();
+    modelTestData->setColumnCount(46);
+    modelTestData->setHeaderData(0,Qt::Horizontal,QString::fromLocal8Bit("时间"));
+    modelTestData->setHeaderData(1,Qt::Horizontal,QString::fromLocal8Bit("电池包状态"));
+    modelTestData->setHeaderData(2,Qt::Horizontal,QString::fromLocal8Bit("总电压"));
+    modelTestData->setHeaderData(3,Qt::Horizontal,QString::fromLocal8Bit("总电流"));
+    modelTestData->setHeaderData(4,Qt::Horizontal,QString::fromLocal8Bit("SOC"));
+    modelTestData->setHeaderData(5,Qt::Horizontal,QString::fromLocal8Bit("最大电压"));
+    modelTestData->setHeaderData(6,Qt::Horizontal,QString::fromLocal8Bit("编号VMax"));
+    modelTestData->setHeaderData(7,Qt::Horizontal,QString::fromLocal8Bit("最小电压"));
+    modelTestData->setHeaderData(8,Qt::Horizontal,QString::fromLocal8Bit("编号VMin"));
+    modelTestData->setHeaderData(9,Qt::Horizontal,QString::fromLocal8Bit("温度1"));
+    modelTestData->setHeaderData(10,Qt::Horizontal,QString::fromLocal8Bit("温度2"));
+    modelTestData->setHeaderData(11,Qt::Horizontal,QString::fromLocal8Bit("温度3"));
+    modelTestData->setHeaderData(12,Qt::Horizontal,QString::fromLocal8Bit("温度4"));
+    modelTestData->setHeaderData(13,Qt::Horizontal,QString::fromLocal8Bit("循环次数"));
+    modelTestData->setHeaderData(14,Qt::Horizontal,QString::fromLocal8Bit("电压差"));
+    modelTestData->setHeaderData(15,Qt::Horizontal,QString::fromLocal8Bit("温度差"));
+    modelTestData->setHeaderData(16,Qt::Horizontal,QString::fromLocal8Bit("单体过压警告等级"));
+    modelTestData->setHeaderData(17,Qt::Horizontal,QString::fromLocal8Bit("单体欠压警告等级"));
+    modelTestData->setHeaderData(18,Qt::Horizontal,QString::fromLocal8Bit("充电高温警告等级"));
+    modelTestData->setHeaderData(19,Qt::Horizontal,QString::fromLocal8Bit("充电低温警告等级"));
+    modelTestData->setHeaderData(20,Qt::Horizontal,QString::fromLocal8Bit("放电高温警告等级"));
+    modelTestData->setHeaderData(21,Qt::Horizontal,QString::fromLocal8Bit("放电低温警告等级"));
+    modelTestData->setHeaderData(22,Qt::Horizontal,QString::fromLocal8Bit("充电过流警告等级"));
+    modelTestData->setHeaderData(23,Qt::Horizontal,QString::fromLocal8Bit("放电过流警告等级"));
+    modelTestData->setHeaderData(24,Qt::Horizontal,QString::fromLocal8Bit("温差过大警告等级"));
+    modelTestData->setHeaderData(25,Qt::Horizontal,QString::fromLocal8Bit("压差过大警告等级"));
+
+    for(int i=0;i<20;i++)
+    {
+        modelTestData->setHeaderData(26+i,Qt::Horizontal,
+                                     "Cell" + QString::number(i+1));
+    }
+    m_dataProcess->setModel(modelTestData);
+}
+
 void MainWindow::timeUpdate(void)
 {
     if(!m_devsetdlg->getCan()->getIsOpen() ||
             !m_devsetdlg->getCan()->getIsStart())
     {
-        //return;
+        return;
     }
     float maxV  = m_dataProcess->getMaxCellVoltage();
     float minV = m_dataProcess->getMinCellVoltage();
@@ -256,16 +299,22 @@ void MainWindow::timeUpdate(void)
     {
         modelTestData->setItem(rows,26+i,new QStandardItem(QString::number(cellsValt[i])));
     }
+
+    if(modelTestData->rowCount() > 5)
+    {
+        m_dataProcess->dataStore();
+        initTestDataModel();
+    }
 }
 
 void MainWindow::dataReceived(VCI_CAN_OBJ &data)
 {
     int rows = model->rowCount();
-    if(rows > ROWNUM)
-    {
-       initModel();
-       rows = 0;
-    }
+//    if(rows > ROWNUM)
+//    {
+//       initModel();
+//       rows = 0;
+//    }
     //更新tableView控件的数据
     model->setItem(rows,0,new QStandardItem("接收"));
     //设置字符颜色
@@ -394,14 +443,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
     qDebug() << "Close";
 }
 
-void MainWindow::on_pushButtonOutputData_clicked()
-{
-    uint cnt = m_dataProcess->dataStore(NULL,modelTestData);
-    if(cnt)
-        QMessageBox::information(this,QObject::tr("保存结果"),QString("%1 行数据保存成功").arg(cnt),QMessageBox::Ok);
-    else
-        QMessageBox::information(this,QObject::tr("保存结果"),QObject::tr("保存失败"),QMessageBox::Ok);
-}
 
 void MainWindow::on_pushButtonWritePrograme_clicked()
 {
