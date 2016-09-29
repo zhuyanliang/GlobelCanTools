@@ -374,14 +374,14 @@ void SysPraModel::on_pushButtonImportConfig_clicked()
             text = QString::number(temp.find("pdlt2").value());
             ui->textEditConfig->append("电池包温差二级警告: " +text + " ℃");
 
-            text = QString::number(temp.find("pov1").value());
+            text = QString::number(temp.find("pov1").value()/10);
             ui->textEditConfig->append("电池包过压一级警告: " +text + " V");
-            text = QString::number(temp.find("pov2").value());
+            text = QString::number(temp.find("pov2").value()/10);
             ui->textEditConfig->append("电池包过压二级警告: " +text + " V");
 
-            text = QString::number(temp.find("puv1").value());
+            text = QString::number(temp.find("puv1").value()/10);
             ui->textEditConfig->append("电池包欠压一级警告: " +text + " V");
-            text = QString::number(temp.find("puv2").value());
+            text = QString::number(temp.find("puv2").value()/10);
             ui->textEditConfig->append("电池包欠压二级警告: " +text + " V");
 
             text = QString::number(temp.find("dlv1").value());

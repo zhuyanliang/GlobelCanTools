@@ -310,11 +310,11 @@ void MainWindow::timeUpdate(void)
 void MainWindow::dataReceived(VCI_CAN_OBJ &data)
 {
     int rows = model->rowCount();
-//    if(rows > ROWNUM)
-//    {
-//       initModel();
-//       rows = 0;
-//    }
+    if(rows > ROWNUM)
+    {
+       initModel();
+       rows = 0;
+    }
     //更新tableView控件的数据
     model->setItem(rows,0,new QStandardItem("接收"));
     //设置字符颜色
