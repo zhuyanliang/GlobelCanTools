@@ -98,9 +98,3 @@ bool TableView2Excel::ExportToExcel()
     return true;
 }
 
-
-void TableView2Excel::printError( QSqlError error)
-{
-    QString sqlerr = error.text();
-    qDebug( qPrintable(sqlerr));
-}
