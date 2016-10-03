@@ -184,6 +184,10 @@ void MainWindow::timeUpdate(void)
     setWarnRadioButton((int)warn.DUT,ui->DUTL1,ui->DUTL2);
     setWarnRadioButton((int)warn.COC,ui->COCL1,ui->COCL2);
     setWarnRadioButton((int)warn.DOC,ui->DOCL1,ui->DOCL2);
+    setWarnRadioButton((int)warn.CIB,ui->VDIFL1,ui->VDIFL2);
+    setWarnRadioButton((int)warn.TIB,ui->TDIFL1,ui->TDIFL2);
+    setWarnRadioButton((int)warn.POV,ui->POVL1,ui->POVL2);
+    setWarnRadioButton((int)warn.PUV,ui->POVL1,ui->PUVL2);
 
     // NOR_REC
     memset(readData,0,8);
@@ -353,20 +357,22 @@ void MainWindow::dataReceived(VCI_CAN_OBJ &data)
     QCoreApplication::processEvents();
 }
 
-void MainWindow::setWarnRadioButton(int level,QRadioButton *radio1,QRadioButton *radio2)
+void MainWindow::setWarnRadioButton(int level,QCheckBox *checkbox1,QCheckBox *checkbox2)
 {
     if(0 == level)
     {
-        radio1->setChecked(false);
-        radio2->setChecked(false);
+        checkbox1->setChecked(false);
+        checkbox2->setChecked(false);
     }
     else if(1 == level)
     {
-        radio1->setChecked(true);
+        checkbox1->setChecked(true);
+        checkbox2->setChecked(false);
     }
     else if(2 == level)
     {
-        radio2->setChecked(true);
+        checkbox1->setChecked(false);
+        checkbox2->setChecked(true);
     }
 }
 

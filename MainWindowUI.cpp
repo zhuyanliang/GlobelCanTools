@@ -184,6 +184,10 @@ void MainWindow::initUI()
     ui->lineEditDOT->setReadOnly(true);
     ui->lineEditDUT->setReadOnly(true);
     ui->lineEditLTC_COM->setReadOnly(true);
+    ui->lineEditVDIF->setReadOnly(true);
+    ui->lineEditTDIF->setReadOnly(true);
+    ui->lineEditPOV->setReadOnly(true);
+    ui->lineEditPUV->setReadOnly(true);
 
     // 设置导出数据的model
     modelTestData = new QStandardItemModel();

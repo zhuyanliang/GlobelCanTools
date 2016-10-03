@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QRadioButton>
+#include <QCheckBox>
 #include "DataProcess.h"
 #include <QCloseEvent>
 
@@ -80,7 +80,7 @@ public:
     void initModel();
     void initTestDataModel();
 
-    void setWarnRadioButton(int level,QRadioButton *radio1,QRadioButton *radio2);
+    void setWarnRadioButton(int level,QCheckBox *checkbox1,QCheckBox *checkbox2);
 
     ~MainWindow();
 signals:

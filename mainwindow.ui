@@ -340,13 +340,13 @@
      <widget class="QWidget" name="layoutWidget2">
       <property name="geometry">
        <rect>
-        <x>662</x>
+        <x>665</x>
         <y>2</y>
-        <width>401</width>
+        <width>421</width>
         <height>251</height>
        </rect>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_18">
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
         <widget class="QTabWidget" name="tabWidgetTemperature">
          <property name="currentIndex">
@@ -354,15 +354,15 @@
          </property>
          <widget class="QWidget" name="tabTemp1">
           <attribute name="title">
-           <string>温度1</string>
+           <string>温度 1</string>
           </attribute>
           <widget class="QWidget" name="layoutWidget3">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>10</y>
-             <width>191</width>
-             <height>181</height>
+             <width>201</width>
+             <height>191</height>
             </rect>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
@@ -522,285 +522,537 @@
          </widget>
          <widget class="QWidget" name="tabTemp2">
           <attribute name="title">
-           <string>温度2</string>
+           <string>温度 2</string>
           </attribute>
          </widget>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBoxFaltInfo">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <widget class="QTabWidget" name="tabWidget">
+         <property name="currentIndex">
+          <number>0</number>
          </property>
-         <property name="title">
-          <string>错误信息</string>
-         </property>
-         <widget class="QWidget" name="layoutWidget4">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>20</y>
-            <width>185</width>
-            <height>221</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <item>
-              <widget class="QLabel" name="labelCOC">
-               <property name="text">
-                <string>COC：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCOC"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="COCL1">
-               <property name="text">
-                <string>一级</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="COCL2">
-               <property name="text">
-                <string>二级</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="QLabel" name="labelDOC">
-               <property name="text">
-                <string>DOC：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditDOC"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="DOCL1">
-               <property name="text">
-                <string>一级</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="DOCL2">
-               <property name="text">
-                <string>二级</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_11">
-             <item>
-              <widget class="QLabel" name="labelCOV">
-               <property name="text">
-                <string>COV：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCOV"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="COVL1">
-               <property name="text">
-                <string>一级</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="COVL2">
-               <property name="text">
-                <string>二级</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_12">
-             <item>
-              <widget class="QLabel" name="labelCUV">
-               <property name="text">
-                <string>CUV：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCUV"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="CUVL1">
-               <property name="text">
-                <string>一级</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="CUVL2">
-               <property name="text">
-                <string>二级</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_13">
-             <item>
-              <widget class="QLabel" name="labelCOT">
-               <property name="text">
-                <string>COT：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCOT"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="COTL1">
-               <property name="text">
-                <string>一级</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="COTL2">
-               <property name="text">
-                <string>二级</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_14">
-             <item>
-              <widget class="QLabel" name="labelCUT">
-               <property name="text">
-                <string>CUT：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditCUT"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="CUTL1">
-               <property name="text">
-                <string>一级</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="CUTL2">
-               <property name="text">
-                <string>二级</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_15">
-             <item>
-              <widget class="QLabel" name="labelDOT">
-               <property name="text">
-                <string>DOT：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditDOT"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="DOTL1">
-               <property name="text">
-                <string>一级</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="DOTL2">
-               <property name="text">
-                <string>二级</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_16">
-             <item>
-              <widget class="QLabel" name="labelDUT">
-               <property name="text">
-                <string>DUT：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditDUT"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="DUTL1">
-               <property name="text">
-                <string>一级</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="DUTL2">
-               <property name="text">
-                <string>二级</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_17">
-             <item>
-              <widget class="QLabel" name="labelLTC_COM">
-               <property name="text">
-                <string>LTC：</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEditLTC_COM"/>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="LTCL1">
-               <property name="text">
-                <string>开路</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="LTCL2">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
+         <widget class="QWidget" name="tab">
+          <attribute name="title">
+           <string>错误信息 1</string>
+          </attribute>
+          <widget class="QWidget" name="layoutWidget4">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>181</width>
+             <height>221</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,2,1,1">
+              <item>
+               <widget class="QLabel" name="labelCOC">
+                <property name="text">
+                 <string>COC：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditCOC"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="COCL1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="COCL2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <item>
+               <widget class="QLabel" name="labelDOC">
+                <property name="text">
+                 <string>DOC：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditDOC"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="DOCL1">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="DOCL2">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_11">
+              <item>
+               <widget class="QLabel" name="labelCOV">
+                <property name="text">
+                 <string>COV：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditCOV"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="COVL1">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="COVL2">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_12">
+              <item>
+               <widget class="QLabel" name="labelCUV">
+                <property name="text">
+                 <string>CUV：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditCUV"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="CUVL1">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="CUVL2">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_13">
+              <item>
+               <widget class="QLabel" name="labelCOT">
+                <property name="text">
+                 <string>COT：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditCOT"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="COTL1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="COTL2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_14">
+              <item>
+               <widget class="QLabel" name="labelCUT">
+                <property name="text">
+                 <string>CUT：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditCUT"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="CUTL1">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="CUTL2">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_15">
+              <item>
+               <widget class="QLabel" name="labelDOT">
+                <property name="text">
+                 <string>DOT：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditDOT"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="DOTL1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="DOTL2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_16">
+              <item>
+               <widget class="QLabel" name="labelDUT">
+                <property name="text">
+                 <string>DUT：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditDUT"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="DUTL1">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="DUTL2">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_17">
+              <item>
+               <widget class="QLabel" name="labelLTC_COM">
+                <property name="text">
+                 <string>LTC：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditLTC_COM"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="LTCL1">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>开路</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="LTCL2">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>通信</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_2">
+          <attribute name="title">
+           <string>错误信息 2</string>
+          </attribute>
+          <widget class="QWidget" name="layoutWidget5">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>181</width>
+             <height>108</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_18">
+              <item>
+               <widget class="QLabel" name="labelCOC_2">
+                <property name="text">
+                 <string>VDIF：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditVDIF">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="VDIFL1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="VDIFL2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <item>
+               <widget class="QLabel" name="labelCOC_3">
+                <property name="text">
+                 <string>TDIF：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditTDIF"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="TDIFL1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="TDIFL2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_20">
+              <item>
+               <widget class="QLabel" name="labelCOC_4">
+                <property name="text">
+                 <string>POV：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditPOV"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="POVL1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="POVL2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_21">
+              <item>
+               <widget class="QLabel" name="labelCOC_5">
+                <property name="text">
+                 <string>PUV：</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditPUV"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="PUVL1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(85, 0, 255);</string>
+                </property>
+                <property name="text">
+                 <string>一级</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="PUVL2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 0, 0);</string>
+                </property>
+                <property name="text">
+                 <string>二级</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </widget>
        </item>
