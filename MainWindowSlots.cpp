@@ -97,11 +97,11 @@ void MainWindow::timeUpdate(void)
     uchar minVP = m_dataProcess->getMinCellVolNum();
     float vDlt = maxV - minV;
 
-    float maxT = m_dataProcess->getMaxCellTemp();
-    float minT = m_dataProcess->getMinCellTemp();
+    char maxT = m_dataProcess->getMaxCellTemp();
+    char minT = m_dataProcess->getMinCellTemp();
     uchar maxTP = m_dataProcess->getMaxCellTempNum();
     uchar minTP = m_dataProcess->getMinCellTempNum();
-    float tDlt = maxT - minT;
+    char tDlt = maxT - minT;
 
     float totalVoltage = m_dataProcess->getTotalVoltage();
     float current = 0.0;
@@ -159,7 +159,7 @@ void MainWindow::timeUpdate(void)
     ui->lineEditCell19->setText(QString::number(cellsValt[18]));
     ui->lineEditCell20->setText(QString::number(cellsValt[19]));
 
-    short temp[4] = {0};
+    char temp[4] = {0};
     m_dataProcess->getCellTemp(temp,8);
     ui->lineEditTemp01->setText(QString::number(temp[0]));
     ui->lineEditTemp02->setText(QString::number(temp[1]));

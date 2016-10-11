@@ -313,7 +313,7 @@ float DataProcess::getMinCellVoltage()
         return 0;
 }
 
-short DataProcess::getMaxCellTemp()
+char DataProcess::getMaxCellTemp()
 {
     if (m_dataRecv.contains(BRO_CELLT_INFO))
     {
@@ -322,13 +322,13 @@ short DataProcess::getMaxCellTemp()
         unsigned char data[8] = {0};
         memcpy(data,dat.Data,dat.DataLen);
 
-        return (short)((data[1]<<8)+data[0]);
+        return (char)data[0];
     }
     else
         return 0;
 }
 
-short DataProcess::getMinCellTemp()
+char DataProcess::getMinCellTemp()
 {
     if (m_dataRecv.contains(BRO_CELLT_INFO))
     {
@@ -337,7 +337,7 @@ short DataProcess::getMinCellTemp()
         unsigned char data[8] = {0};
         memcpy(data,dat.Data,dat.DataLen);
 
-        return (short)((data[3]<<8)+data[2]);
+        return (char)data[1];
     }
     else
         return 0;
@@ -389,7 +389,7 @@ ushort DataProcess::getCellVolt(uchar num)
     }
 }
 
-void DataProcess::getCellTemp(short *temp,int len)
+void DataProcess::getCellTemp(char *temp,int len)
 {
     if(m_dataRecv.contains(BRO_TEMP_01))
     {
@@ -409,7 +409,7 @@ uchar DataProcess::getMinCellTempNum()
         unsigned char data[8] = {0};
         memcpy(data,dat.Data,dat.DataLen);
 
-        return data[5];
+        return data[3];
     }
     else
         return 0;
@@ -425,7 +425,7 @@ uchar DataProcess::getMaxCellTempNum()
         unsigned char data[8] = {0};
         memcpy(data,dat.Data,dat.DataLen);
 
-        return data[4];
+        return data[2];
     }
     else
         return 0;

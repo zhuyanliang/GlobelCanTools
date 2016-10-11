@@ -34,14 +34,14 @@ public:
 
     float getMaxCellVoltage();
     float getMinCellVoltage();
-    short getMinCellTemp();
-    short getMaxCellTemp();
+    char getMinCellTemp();
+    char getMaxCellTemp();
     uchar getMaxCellVolNum();
     uchar getMinCellVolNum();
     uchar getMaxCellTempNum();
     uchar getMinCellTempNum();
     ushort getCellVolt(uchar num);
-    void getCellTemp(short *temp, int len);
+    void getCellTemp(char *temp, int len);
     ushort getChgCircNum();         //充放电循环次数
     void getCellsVoltage(float cellVol[], int len);//获取所有电芯实时电压
     void getBattWarnError(unsigned char *buf, int len);
