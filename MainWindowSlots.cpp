@@ -259,6 +259,12 @@ void MainWindow::timeUpdate(void)
     tempData += readData[0];
     ui->lineEditLTC_COM->setText(QString::number(tempData));
 
+    //VDIF TDIF POV PUV
+    ui->lineEditPOV->setText("NULL");
+    ui->lineEditPUV->setText("NULL");
+    ui->lineEditVDIF->setText("NULL");
+    ui->lineEditTDIF->setText("NULL");
+
     // µç³Ø×´Ì¬
     uchar index = (uchar)m_sysPraModel->getStatus();
     if(index >= 0 && index < 5)
