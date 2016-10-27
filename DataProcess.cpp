@@ -32,6 +32,7 @@ void DataProcess::setModel(QStandardItemModel *mod)
 
 void DataProcess::onTimeout()
 {
+#if 0
     static uint cnt = 0;
     cnt++;
     if(cnt>=5)
@@ -39,6 +40,8 @@ void DataProcess::onTimeout()
         cnt = 0;
         sendGetDataRequest();
     }
+#endif
+    sendGetDataRequest();
     //接收数据
     receiveData();
 }

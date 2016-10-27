@@ -187,7 +187,7 @@ void MainWindow::timeUpdate(void)
     setWarnRadioButton((int)warn.CIB,ui->VDIFL1,ui->VDIFL2);
     setWarnRadioButton((int)warn.TIB,ui->TDIFL1,ui->TDIFL2);
     setWarnRadioButton((int)warn.POV,ui->POVL1,ui->POVL2);
-    setWarnRadioButton((int)warn.PUV,ui->POVL1,ui->PUVL2);
+    setWarnRadioButton((int)warn.PUV,ui->PUVL1,ui->PUVL2);
 
     // NOR_REC
     memset(readData,0,8);
