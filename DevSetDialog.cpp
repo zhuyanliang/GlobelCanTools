@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QSettings>
-//#include "DebugConfig.h"
 
 DevSetDialog::DevSetDialog(QWidget *parent) :
     QDialog(parent),
@@ -14,7 +13,7 @@ DevSetDialog::DevSetDialog(QWidget *parent) :
 
     m_can = CanBus::getInstance();
 
-    //从QSettings中都回上次的参数
+    //从QSettings中返回上次的参数
     QSettings settings;
     ui->comboBoxDevType->setCurrentIndex(
             settings.value("devType",0).toInt());

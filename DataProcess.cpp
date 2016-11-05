@@ -32,15 +32,6 @@ void DataProcess::setModel(QStandardItemModel *mod)
 
 void DataProcess::onTimeout()
 {
-#if 0
-    static uint cnt = 0;
-    cnt++;
-    if(cnt>=5)
-    {
-        cnt = 0;
-        sendGetDataRequest();
-    }
-#endif
     sendGetDataRequest();
     //接收数据
     receiveData();
@@ -129,19 +120,19 @@ void DataProcess::sendGetDataRequest()
         sendFrame.ID = REQ_READ_NOR;
         break;
     case 13:
-        sendFrame.ID = REQ_FALT_OC;
+        sendFrame.ID = REQ_FALT_1;
         break;
     case 14:
-        sendFrame.ID = REQ_FALT_OUV;
+        sendFrame.ID = REQ_FALT_2;
         break;
     case 15:
-        sendFrame.ID = REQ_FALT_COUT;
+        sendFrame.ID = REQ_FALT_3;
         break;
     case 16:
-        sendFrame.ID = REQ_FALT_DOUT;
+        sendFrame.ID = REQ_FALT_4;
         break;
     case 17:
-        sendFrame.ID = REQ_FALT_HARD;
+        sendFrame.ID = REQ_FALT_5;
         break;
     default:
         m_requestNum = 0;
@@ -589,51 +580,51 @@ void DataProcess::getNorRec(unsigned char *buf, int len)
     }
 }
 
-void DataProcess::getOCRec(unsigned char *buf, int len)
+void DataProcess::getFaultRec1(unsigned char *buf, int len)
 {
-    if(m_dataRecv.contains(REC_FALT_OC) && (8 == len))
+    if(m_dataRecv.contains(REC_FALT_1) && (8 == len))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_OC);
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_1);
 
         memcpy(buf,dat.Data,len);
     }
 }
 
-void DataProcess::getOUVRec(unsigned char *buf, int len)
+void DataProcess::getFaultRec2(unsigned char *buf, int len)
 {
-    if(m_dataRecv.contains(REC_FALT_OUV) && (8 == len))
+    if(m_dataRecv.contains(REC_FALT_2) && (8 == len))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_OUV);
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_2);
 
         memcpy(buf,dat.Data,len);
     }
 }
 
-void DataProcess::getCOUTRec(unsigned char *buf, int len)
+void DataProcess::getFaultRec3(unsigned char *buf, int len)
 {
-    if(m_dataRecv.contains(REC_FALT_COUT) && (8 == len))
+    if(m_dataRecv.contains(REC_FALT_3) && (8 == len))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_COUT);
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_3);
 
         memcpy(buf,dat.Data,len);
     }
 }
 
-void DataProcess::getDOUTRec(unsigned char *buf, int len)
+void DataProcess::getFaultRec4(unsigned char *buf, int len)
 {
-    if(m_dataRecv.contains(REC_FALT_DOUT) && (8 == len))
+    if(m_dataRecv.contains(REC_FALT_4) && (8 == len))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_DOUT);
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_4);
 
         memcpy(buf,dat.Data,len);
     }
 }
 
-void DataProcess::getLtcRec(unsigned char *buf, int len)
+void DataProcess::getFaultRec5(unsigned char *buf, int len)
 {
-    if(m_dataRecv.contains(REC_FALT_HARD) && (8 == len))
+    if(m_dataRecv.contains(REC_FALT_5) && (8 == len))
     {
-        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_HARD);
+        VCI_CAN_OBJ dat = m_dataRecv.value(REC_FALT_5);
 
         memcpy(buf,dat.Data,len);
     }

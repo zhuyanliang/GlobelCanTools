@@ -70,6 +70,7 @@ private:
     QStandardItemModel *model;
     QLabel *statusLabel;
     QStandardItemModel *modelTestData;
+    QMap<int,QString> FaultInfo;
 
 protected:
      void closeEvent(QCloseEvent *event);

@@ -58,12 +58,13 @@ public:
     void getPackOV(unsigned char *buf, int len);
     void getPackUV(unsigned char *buf, int len);
 
+    // 错误发生次数
     void getNorRec(unsigned char *buf, int len);
-    void getOCRec(unsigned char *buf, int len);
-    void getOUVRec(unsigned char *buf, int len);
-    void getCOUTRec(unsigned char *buf, int len);
-    void getDOUTRec(unsigned char *buf, int len);
-    void getLtcRec(unsigned char *buf, int len);
+    void getFaultRec1(unsigned char *buf, int len);
+    void getFaultRec2(unsigned char *buf, int len);
+    void getFaultRec3(unsigned char *buf, int len);
+    void getFaultRec4(unsigned char *buf, int len);
+    void getFaultRec5(unsigned char *buf, int len);
 
     void timerStart(void){m_timer->start();}
     void timerStop(void){m_timer->stop();}

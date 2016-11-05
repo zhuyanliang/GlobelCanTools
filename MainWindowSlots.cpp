@@ -2,6 +2,7 @@
 #include <QLabel>
 #include <QThread>
 #include <QTime>
+#include <QMap>
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
 #include "VoltageUI.h"
@@ -189,7 +190,7 @@ void MainWindow::timeUpdate(void)
     setWarnRadioButton((int)warn.POV,ui->POVL1,ui->POVL2);
     setWarnRadioButton((int)warn.PUV,ui->PUVL1,ui->PUVL2);
 
-    // NOR_REC
+    // NOR_REC SOH和最近的三次错误信息
     memset(readData,0,8);
     unsigned short times = 0;
     m_dataProcess->getNorRec(readData,8);
@@ -198,10 +199,14 @@ void MainWindow::timeUpdate(void)
     times |= readData[0];
     m_cellMinMaxInfoUi->lineEditCycTimes->setText(QString::number(times));
 
-    // FALT_OC
+    ui->labelFault1->setText("1." + FaultInfo.value(readData[2]));
+    ui->labelFault2->setText("2." + FaultInfo.value(readData[3]));
+    ui->labelFault3->setText("3." + FaultInfo.value(readData[4]));
+
+    // FALT_1
     memset(readData,0,8);
     tempData = 0;
-    m_dataProcess->getOCRec(readData,8);
+    m_dataProcess->getFaultRec1(readData,8);
     tempData = readData[1];
     tempData <<= 8;
     tempData += readData[0];
@@ -211,23 +216,31 @@ void MainWindow::timeUpdate(void)
     tempData += readData[4];
     ui->lineEditDOC->setText(QString::number(tempData));
 
-    //OUV
+    //FALT_2
     memset(readData,0,8);
     tempData = 0;
-    m_dataProcess->getOUVRec(readData,8);
+    m_dataProcess->getFaultRec2(readData,8);
     tempData = readData[1];
     tempData <<= 8;
     tempData += readData[0];
     ui->lineEditCOV->setText(QString::number(tempData));
+    tempData = readData[3];
+    tempData <<= 8;
+    tempData += readData[2];
+    ui->lineEditPOV->setText(QString::number(tempData));
     tempData = readData[5];
     tempData <<= 8;
     tempData += readData[4];
     ui->lineEditCUV->setText(QString::number(tempData));
+    tempData = readData[7];
+    tempData <<= 8;
+    tempData += readData[6];
+    ui->lineEditPUV->setText(QString::number(tempData));
 
-    // COUT
+    // FALT_3
     memset(readData,0,8);
     tempData = 0;
-    m_dataProcess->getCOUTRec(readData,8);
+    m_dataProcess->getFaultRec3(readData,8);
     tempData = readData[1];
     tempData <<= 8;
     tempData += readData[0];
@@ -237,33 +250,36 @@ void MainWindow::timeUpdate(void)
     tempData += readData[4];
     ui->lineEditCUT->setText(QString::number(tempData));
 
-    // DOUT
+    // FALT_4
     memset(readData,0,8);
     tempData = 0;
-    m_dataProcess->getDOUTRec(readData,8);
+    m_dataProcess->getFaultRec4(readData,8);
     tempData = readData[1];
     tempData <<= 8;
     tempData += readData[0];
     ui->lineEditDOT->setText(QString::number(tempData));
+    tempData = readData[3];
+    tempData <<= 8;
+    tempData += readData[2];
+    ui->lineEditDUT->setText(QString::number(tempData));
+
     tempData = readData[5];
     tempData <<= 8;
     tempData += readData[4];
-    ui->lineEditDUT->setText(QString::number(tempData));
+    ui->lineEditVDIF->setText(QString::number(tempData));
+    tempData = readData[7];
+    tempData <<= 8;
+    tempData += readData[6];
+    ui->lineEditTDIF->setText(QString::number(tempData));
 
-    // HARD  LTC6803
+    // FALT_5  LTC6803
     memset(readData,0,8);
     tempData = 0;
-    m_dataProcess->getLtcRec(readData,8);
+    m_dataProcess->getFaultRec5(readData,8);
     tempData = readData[1];
     tempData <<= 8;
     tempData += readData[0];
     ui->lineEditLTC_COM->setText(QString::number(tempData));
-
-    //VDIF TDIF POV PUV
-    ui->lineEditPOV->setText("NULL");
-    ui->lineEditPUV->setText("NULL");
-    ui->lineEditVDIF->setText("NULL");
-    ui->lineEditTDIF->setText("NULL");
 
     // 电池状态
     uchar index = (uchar)m_sysPraModel->getStatus();

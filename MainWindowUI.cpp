@@ -16,11 +16,15 @@
 #include "DownLoadUi.h"
 #include "SysPraModel.h"
 
-
-
 const char* IndictorLabelText[IndictorLightNum] = {
     "控制器通信","BMS间通信","温度模块通信",
     "仪表通信","用户界面通信"
+};
+
+const QString faultinfo[13] = {
+    "FAULT_CUV","FAULT_COV","FAULT_CUT","FAULT_COT","FAULT_DUT",
+    "FAULT_DOT","FAULT_COC","FAULT_DOC","FAULT_VDIF","FAULT_TDIF",
+    "FAULT_POV","FAULT_PUV","FAULT_LTC"
 };
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -31,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     initUI();
+
+    //初始化最近三个错误信息
+    for(int i=0;i<13;i++)
+        FaultInfo.insert(0xE0+i, faultinfo[i]);
 
     //打开关闭按钮信号
     connect(ui->pushButtonOpen,SIGNAL(clicked()),m_devsetdlg,SLOT(devSetButtonClicked()));
@@ -227,7 +235,7 @@ void MainWindow::initUI()
 
     //CAN数据处理器
     m_dataProcess = new DataProcess(modelTestData);
-    m_dataProcess->setTimerInterval(50); //50ms接收一次数据
+    m_dataProcess->setTimerInterval(30); //50ms接收一次数据
     m_sysPraModel = new SysPraModel(m_dataProcess,ui->tabSet);
     m_sysPraModel->move(0,5);
     m_sysPraModel->show();

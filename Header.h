@@ -50,11 +50,11 @@
 #define REQ_READ_PUV        0x182CF4FD
 
 #define REQ_READ_NOR        0x1840F4FD // SOH 三次错误记录
-#define REQ_FALT_OC         0x1841F4FD // 过流
-#define REQ_FALT_OUV        0x1842F4FD // 过欠压
-#define REQ_FALT_COUT       0x1843F4FD // 充电高低温
-#define REQ_FALT_DOUT       0x1844F4FD // 放电高低温
-#define REQ_FALT_HARD       0x1846F4FD // 系统硬件故障 目前主要是6803
+#define REQ_FALT_1          0x1841F4FD // 发生错误次数1
+#define REQ_FALT_2          0x1842F4FD // 发生错误次数2
+#define REQ_FALT_3          0x1843F4FD // 发生错误次数3
+#define REQ_FALT_4          0x1844F4FD // 发生错误次数4
+#define REQ_FALT_5          0x1846F4FD // 发生错误次数5
 
 // GUI接收到所请求数据的标示符
 #define REC_BMS_VERSION     0x1800FDF4
@@ -76,11 +76,11 @@
 #define REC_READ_PUV        0x182CFDF4
 
 #define REC_READ_NOR        0x1840FDF4 // SOH 三次错误记录
-#define REC_FALT_OC         0x1841FDF4 // 过流
-#define REC_FALT_OUV        0x1842FDF4 // 过欠压
-#define REC_FALT_COUT       0x1843FDF4 // 充电高低温
-#define REC_FALT_DOUT       0x1844FDF4 // 放电高低温
-#define REC_FALT_HARD       0x1846FDF4 // 系统硬件故障 目前主要是6803
+#define REC_FALT_1          0x1841FDF4 // 发生错误次数1
+#define REC_FALT_2          0x1842FDF4 // 发生错误次数2
+#define REC_FALT_3          0x1843FDF4 // 发生错误次数3
+#define REC_FALT_4          0x1844FDF4 // 发生错误次数4
+#define REC_FALT_5          0x1846FDF4 // 发生错误次数5
 
 // GUI读写内部EEPROM
 #define REQ_WRITE_EEPROM        0x1830F4FD
@@ -101,6 +101,22 @@
 #define  CAN_GUI_CONFIG_PUV_TH                 ((uint8_t)0x1B)
 #define  CAN_GUI_CONFIG_ISO_TH                 ((uint8_t)0x1C)
 #define  CAN_GUI_CONFIG_PDIM_TH                ((uint8_t)0x1D)
+
+
+// 错误信息代码
+#define FALT_CUV 	0xE0 // 电芯低压
+#define FALT_COV 	0xE1 // 电芯高压
+#define FALT_CUT	0xE2 // 充电低温
+#define FALT_COT	0xE3 // 充电高温
+#define FALT_DUT	0xE4 // 放电低温
+#define FALT_DOT	0xE5 // 放电高温
+#define FALT_COC	0xE6 // 充电过流
+#define FALT_DOC	0xE7 // 放电过流
+#define FALT_VDIF	0xE8 // 电芯电压一致性
+#define FALT_TDIF	0xE9 // 温差
+#define FALT_POV 	0xEA // 包过压
+#define FALT_PUV	0xEB // 包低压
+#define FALT_LTC	0xEC // 6803错误
 
 
 #endif // HEADER_H
