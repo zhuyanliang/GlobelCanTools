@@ -7,13 +7,12 @@
 
 int main(int argc, char *argv[])
 {
-    //QSettings settings;
-
     QCoreApplication::setOrganizationName("GlobeCanTools");
     QCoreApplication::setOrganizationDomain("Globe.com");
     QCoreApplication::setApplicationName("CanGui");
 
     QApplication::addLibraryPath("./plugins");
+    QApplication::addLibraryPath(QApplication::applicationDirPath());
     QTextCodec *codec = QTextCodec::codecForName("GB2312");
     QTextCodec::setCodecForLocale(codec);
     QTextCodec::setCodecForTr(codec);

@@ -16,11 +16,14 @@ public:
     ~TableView2Excel();
     bool ExportToExcel();
     void printError(QSqlError error);
+    void initSheet();
     
 signals:
     
 public slots:
 private:
+    unsigned int sheetcnt;
+    unsigned int rowsCnt;
     QSqlDatabase    db;
     QSqlQuery       *query;
     QString         sSql;

@@ -8,10 +8,9 @@
 #include <QProgressBar>
 
 TableView2Excel::TableView2Excel(QStandardItemModel *mod,QObject *parent) :
-    QObject(parent),model(mod)
+    QObject(parent),sheetcnt(1),rowsCnt(0), model(mod)
 {
     sSql = "";
-    sheetName = "BMSData";
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC","excelexport");
     if( !db.isValid())
     {
@@ -35,8 +34,15 @@ TableView2Excel::TableView2Excel(QStandardItemModel *mod,QObject *parent) :
 
     query = new QSqlQuery(db);
 
+    initSheet();
+}
+
+void TableView2Excel::initSheet()
+{
+    sheetName = "BMSData" + QString::number(sheetcnt);
+    sheetcnt++;
     sSql = QString("DROP TABLE [%1]").arg(sheetName);
-    query->exec( sSql);
+    query->exec(sSql);
 
     sSql = QString("CREATE TABLE [%1] (").arg(sheetName);
 
@@ -66,6 +72,13 @@ bool TableView2Excel::ExportToExcel()
 {
     int tableR = model->rowCount();
     int tableC = model->columnCount();
+    rowsCnt += tableR;
+
+    if(rowsCnt > 65500)
+    {
+        rowsCnt = 0;
+        initSheet();
+    }
 
     sSql = QString("INSERT INTO [%1] (").arg(sheetName);
 
